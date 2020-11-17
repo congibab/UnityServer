@@ -10,7 +10,7 @@ wss.on('connection', function connection(ws, req){
     connections.push(ws);
 
     const ip = req.socket.remoteAddress;
-    console.log(ip);
+    //console.log(ip);
 
     //===================================================
     ws.on('close', function(){
@@ -21,7 +21,7 @@ wss.on('connection', function connection(ws, req){
 
     ws.on('message', function incoming(message){
         console.log('received : %s', message)
-        console.log(ws);
+        //console.log(ws);
 
         wss.clients.forEach(function(client){
             if(client !== ws){
