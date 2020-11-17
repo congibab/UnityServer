@@ -1,17 +1,31 @@
+//include Class
+//==========================================
+var Transform = require("./Class/Transform.js");
+var transform = new Transform();
+var JsonStatus = require("./Class/JsonStatus.js");
+var jsonStatus = new JsonStatus();
+
+//var Matrix = require('transformation-matrix');
+//const { compose, translate, scale, rotate, applyToPoint } = require("transformation-matrix");
+
+//include webSocek Class
 var WebSocketServer = require('ws').Server
 var wss = new WebSocketServer({
     port: 8090
 });
 
-var connections = [];
+console.log('Server Start');
 
+//=====================================
 wss.on('connection', function connection(ws, req){
+    //include Test
+    //========================
+    //jsonStatus.test();
+    //========================
+   
     console.log('some user connected');
-    connections.push(ws);
-
     const ip = req.socket.remoteAddress;
-    //console.log(ip);
-
+    connections.push(ws);
     //===================================================
     ws.on('close', function(){
         connections = connections.filter(function(conn, i){
@@ -20,22 +34,33 @@ wss.on('connection', function connection(ws, req){
     });
 
     ws.on('message', function incoming(message){
-        console.log('received : %s', message)
-        //console.log(ws);
+        console.log('<<== received : %s', message)     
+        //===========================
 
-        wss.clients.forEach(function(client){
-            if(client !== ws){
-                client.send(message);
+        //Json type inspection
+        try{
+            var test = JSON.parse(message);
+            switch(test.type){
+                case "transform":
+                    console.log("data type is transform");
+                break;
+                default:
+                    console.log("data type not find");
+                break;
             }
-        });
-        //ws.send(message);
+            wss.clients.forEach(function(client){
+                // if(client !== ws){
+                //     client.send(message);
+                // }
+                client.send(message);
+            });
+
+        } catch(e){
+            console.log("message is not JSON Type");
+            ws.send(message);
+        }
+        //===========================
     })
     //===================================================
     ws.send('message sended from server');
-})
-
-function broadcast(message){
-    connections.forEach(function (con, i){
-        con.send(message);
-    });
-};
+});
