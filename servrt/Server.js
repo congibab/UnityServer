@@ -5,6 +5,8 @@ var transform = new Transform();
 var JsonStatus = require("./Class/JsonStatus.js");
 var jsonStatus = new JsonStatus();
 
+const { v4: uuidv4 } = require('uuid');
+
 //var Matrix = require('transformation-matrix');
 //const { compose, translate, scale, rotate, applyToPoint } = require("transformation-matrix");
 
@@ -15,6 +17,7 @@ var wss = new WebSocketServer({
 });
 
 console.log('Server Start');
+console.log(uuidv4());
 
 //=====================================
 wss.on('connection', function connection(ws, req){
