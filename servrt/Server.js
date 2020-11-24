@@ -16,49 +16,71 @@ var wss = new WebSocketServer({
     port: 8090
 });
 
+var UUID = [];
+var connections = [];
+
 console.log('Server Start');
-console.log(uuidv4());
+
+//for(var i = 0; i < 10; i++){
+//    UUID[i] = uuidv4();
+//    console.log(UUID[i]);
+//}
+var jsonData = jsonStatus.getData();
+console.log(JSON.stringify(jsonData));
 
 //=====================================
-wss.on('connection', function connection(ws, req){
-    //include Test
-    //========================
-    //jsonStatus.test();
-    //========================
-   
+//=====================================
+wss.on('connection', function connection(ws, req) {
+
+    jsonData.Types = 'init';
+    jsonData.UUID = uuidv4();
+
+    ws.send(JSON.stringify(jsonData));
+
     console.log('some user connected');
-    const ip = req.socket.remoteAddress;
+    UUID.push(jsonData.UUID);
     connections.push(ws);
+
     //===================================================
-    ws.on('close', function(){
-        connections = connections.filter(function(conn, i){
+    ws.on('close', function () {
+        connections = connections.filter(function (conn, i) {
             return (conn === ws) ? false : true;
         });
     });
 
-    ws.on('message', function incoming(message){
-        console.log('<<== received : %s', message)     
+    ws.on('message', function incoming(message) {
+        console.log('<<== received : %s', message)
         //===========================
 
         //Json type inspection
-        try{
+        try {
             var test = JSON.parse(message);
-            switch(test.type){
-                case "transform":
-                    console.log("data type is transform");
-                break;
+            switch (test['Types']) {
+                case "init":
+                    console.log("data type is   transform");
+                    break;
+
+                case "Player1_input":
+                    console.log("data type is   input");
+                    //ws.send(JSON.stringify(jsonData));
+                    break;
+
+                case "Player2_input":
+                    console.log("data type is   input");
+                    break;
+
                 default:
                     console.log("data type not find");
-                break;
+                    break;
             }
-            wss.clients.forEach(function(client){
+            wss.clients.forEach(function (client) {
                 // if(client !== ws){
                 //     client.send(message);
                 // }
                 client.send(message);
             });
 
-        } catch(e){
+        } catch (e) {
             console.log("message is not JSON Type");
             ws.send(message);
         }

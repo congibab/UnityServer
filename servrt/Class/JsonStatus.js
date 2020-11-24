@@ -1,19 +1,31 @@
+var data;
+
 var JsonStatus = function () {
-    var Types;
+    this.data = {
+        Types: "",
 
-    var id;
+        UUID: "",
+        
+        player1: {
+            UUID: "",  
+            Pos_x: "",
+            Pos_y: "",
+            Pos_z: "",
+        }
+        ,
+        player2: {
+            UUID: "",
+            Pos_x: "",
+            Pos_y: "",
+            Pos_z: "",
+        }
 
-    var PositionX;
-    var PositionY;
-    var PositionZ;
+    }
 
-    var RotationX;
-    var RotationY;
-    var RotationZ;
 }
 
-JsonStatus.prototype.test = function() {
-    console.log("test");
+JsonStatus.prototype.getData = function () {
+    return this.data;
 }
 
 module.exports = JsonStatus;

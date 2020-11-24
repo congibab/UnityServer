@@ -1,18 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 
-[Serializable]
+[System.Serializable]
+public class Player
+{
+    public string UUID;
+    public float Pos_x;
+    public float Pos_y;
+    public float Pos_z;
+}
+
+
+[System.Serializable]
 public class ObjectStatus
 {
-    public string type;
+    public string Types;
 
-    public string id;
+    public string UUID;
 
-    public float PositionX;
-    public float PositionY;
-    public float PositionZ;
-
-    public float RotationX;
-    public float RotationY;
-    public float RotationZ;
+    public Player player1;
+    public Player player2;
 }
-    
+

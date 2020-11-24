@@ -15,6 +15,8 @@ public class NetworkManager : MonoBehaviour
     private ObjectStatus objectStatus;
     public GameObject testObject;
 
+    private string jsonData;
+
     public SyncPhase _nowPhase = SyncPhase.Idling;
     public enum SyncPhase
     {
@@ -28,7 +30,6 @@ public class NetworkManager : MonoBehaviour
         objectStatus = new ObjectStatus();
         _nowPhase = SyncPhase.Idling;
         NetworkConnect();
-
     }
 
     void Start()
@@ -38,17 +39,13 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.A) && _nowPhase == SyncPhase.Syncing)
         {
-            objectStatus.type = "transform";
-            objectStatus.PositionX = testObject.transform.position.x;
-            objectStatus.PositionY = testObject.transform.position.y;
-            objectStatus.PositionZ = testObject.transform.position.z;
-
-            objectStatus.RotationX = testObject.transform.rotation.x;
-            objectStatus.RotationY = testObject.transform.rotation.y;
-            objectStatus.RotationZ = testObject.transform.rotation.z;
-
+            objectStatus.Types = "Player1_input";
+          
+            objectStatus.player1.Pos_x = testObject.transform.position.x;
+            objectStatus.player1.Pos_y = testObject.transform.position.y;
+            objectStatus.player1.Pos_z = testObject.transform.position.z;
             var json = JsonUtility.ToJson(objectStatus);
             ws.Send(json);
         }
@@ -70,6 +67,30 @@ public class NetworkManager : MonoBehaviour
         ws.OnMessage += (object sender, MessageEventArgs e) =>
         {
             Debug.Log("==>>" + e.Data);
+            try
+            {
+                var test = JsonUtility.FromJson<ObjectStatus>(e.Data);
+                Debug.Log(test.Types);
+
+                switch (test.Types)
+                {
+                    case "init":
+                        Debug.Log(test.UUID);
+                        break;
+                    case "input":
+                        
+                        break;
+                    default:
+                        break;
+                }
+                objectStatus = test;
+
+            }
+            catch(Exception ex)
+            {
+                Debug.Log("not json");
+            }
+
         };
 
         ws.OnError += (sender, e) =>
