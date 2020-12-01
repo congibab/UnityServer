@@ -310,6 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   socket: {fileID: 1857003215}
   canvas: {fileID: 923198590}
+  player: {fileID: 6038647908836695625, guid: 8577c3c9d6bf1134686fef3aa49b3c0e, type: 3}
 --- !u!4 &721657682
 Transform:
   m_ObjectHideFlags: 0
