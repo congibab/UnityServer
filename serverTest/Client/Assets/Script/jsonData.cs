@@ -13,4 +13,9 @@ public class UserJSON
     {
         return JsonUtility.FromJson<UserJSON>(data);
     }
+
+    public static string CreateToJSON(UserJSON data)
+    {
+        return JsonUtility.ToJson(data);
+    }
 }

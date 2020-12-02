@@ -5,6 +5,7 @@ using SocketIO;
 
 public class NetworkManger : MonoBehaviour
 {
+    static public NetworkManger instance;
 
     [SerializeField]
     private SocketIOComponent socket;
@@ -16,7 +17,15 @@ public class NetworkManger : MonoBehaviour
     //C++ = map class
     Dictionary<string, GameObject> players;
 
-    public void Start()
+    [SerializeField]
+    List<string> UUID_list = new List<string>();
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void Start()
     {
         socket.On("open", TestOpen);
         socket.On("error", TestError);
@@ -27,8 +36,9 @@ public class NetworkManger : MonoBehaviour
 
         socket.On("OtherSpawn", OnOtherSpawn);
         socket.On("PlayableSpawn", OnplayableSpawn);
-        
+
         socket.On("requestPosition", OnRequestPosition);
+        socket.On("UpdatePosition", OnUpdatePosition);
 
 
         players = new Dictionary<string, GameObject>();
@@ -40,10 +50,11 @@ public class NetworkManger : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         socket.Emit("NetworkStart");
         yield return new WaitForSeconds(1.0f);
-        
+
     }
 
     //===========================================
+    //CallBack Function
     //===========================================
 
     public void GameStart()
@@ -70,12 +81,20 @@ public class NetworkManger : MonoBehaviour
 
     public void TestDisconnect(SocketIOEvent e)
     {
-        Debug.Log("Client disconnected: " + e.data);
-        canvas.gameObject.SetActive(true);
+        Debug.Log("Server disconnected: " + e.data);
 
-       // var player = players
-        
+        for (int i = 0; i < UUID_list.Count; i++)
+        {
+            var player = players[UUID_list[i]];
+            Destroy(player);
+            players.Remove(UUID_list[i]);
+            UUID_list.RemoveAt(i);
+        }
+        canvas.gameObject.SetActive(true);
     }
+
+    //====================================================
+    //====================================================
 
     /// <summary>
     /// none Playable object
@@ -88,9 +107,10 @@ public class NetworkManger : MonoBehaviour
         UserJSON user = UserJSON.CreateFromJSON(data);
 
         GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
-        
         players.Add(user.id, p);
         Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+
+        UUID_list.Add(user.id);
 
         p.GetComponent<Player>().UUID = user.id;
         p.GetComponent<Player>().is_Local = false;
@@ -110,6 +130,8 @@ public class NetworkManger : MonoBehaviour
 
         players.Add(user.id, p);
         Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+
+        UUID_list.Add(user.id);
 
         p.GetComponent<Player>().UUID = user.id;
         p.GetComponent<Player>().is_Local = true;
@@ -131,5 +153,22 @@ public class NetworkManger : MonoBehaviour
     {
 
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="e"></param>
+    public void OnUpdatePosition(SocketIOEvent e)
+    {
+        Debug.Log("OnMovement: " + e.data);
+
+        string data = e.data.ToString();
+        UserJSON user = UserJSON.CreateFromJSON(data);
+
+        var player = players[user.id];
+        player.transform.position = new Vector3(user.x, user.y, user.z);
+    }
+    //===========================================
+    //===========================================
 }
 

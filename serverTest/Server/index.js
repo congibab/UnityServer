@@ -1,4 +1,5 @@
 const { DH_NOT_SUITABLE_GENERATOR } = require('constants');
+const { json } = require('express');
 const { v4: uuidv4 } = require('uuid');
 
 var app = require('express')();
@@ -31,20 +32,25 @@ io.on('connection', function (socket) {
 	socket.on('NetworkStart', () => {
 		players[thisPlayerId] = player;
 		//=======
-		console.log('Client connected, broadcasting spawn, id: ', thisPlayerId);
+		console.log('Client connected, broadcast ing spawn, id: ', thisPlayerId);
 		socket.broadcast.emit('OtherSpawn', { id: thisPlayerId });
-		socket.broadcast.emit('requestPosition');
 		//=======
 
 		for (var playerId in players) {
 			if (playerId == thisPlayerId) {
 				socket.emit('PlayableSpawn', players[playerId]);
-				continue;
 			}
-
-			socket.emit('OtherSpawn', players[playerId]);
-			console.log('Sending inti to new Player UUID: ', playerId);
+			else {
+				socket.emit('OtherSpawn', players[playerId]);
+				console.log('Sending inti to new Player UUID: ', playerId);
+			}
 		};
+	});
+
+	socket.on('Movement', function (data) {
+		console.log(data);
+		socket.emit('UpdatePosition', data);
+		socket.broadcast.emit('UpdatePosition', data);
 	});
 
 
