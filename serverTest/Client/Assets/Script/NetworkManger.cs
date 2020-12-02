@@ -16,12 +16,13 @@ public class NetworkManger : MonoBehaviour
 
     //C++ = map class
     Dictionary<string, GameObject> players;
-
-    [SerializeField]
     List<string> UUID_list = new List<string>();
+
+    private bool is_starting;
 
     private void Awake()
     {
+        is_starting = false;
         instance = this;
     }
 
@@ -54,27 +55,33 @@ public class NetworkManger : MonoBehaviour
     }
 
     //===========================================
-    //CallBack Function
+    //UI Button Function
     //===========================================
-
-    public void GameStart()
+    public void GameStartButton()
     {
+        is_starting = true;
         StartCoroutine(NetworkConnect());
     }
-
+    //===========================================
+    //CallBack Function
+    //===========================================
     public void TestOpen(SocketIOEvent e)
     {
+        is_starting = false;
+        canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
     }
 
     public void TestError(SocketIOEvent e)
     {
+        is_starting = false;
         canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
     }
 
     public void TestClose(SocketIOEvent e)
     {
+        is_starting = false;
         canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
     }
@@ -82,7 +89,7 @@ public class NetworkManger : MonoBehaviour
     public void TestDisconnect(SocketIOEvent e)
     {
         Debug.Log("Server disconnected: " + e.data);
-
+        is_starting = false;
         for (int i = 0; i < UUID_list.Count; i++)
         {
             var player = players[UUID_list[i]];
@@ -102,6 +109,8 @@ public class NetworkManger : MonoBehaviour
     /// <param name="e"></param>
     public void OnOtherSpawn(SocketIOEvent e)
     {
+        if (!is_starting) return;
+
         Debug.Log("Spawn spawned" + e.data);
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);

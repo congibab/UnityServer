@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();    
+        socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
     }
     void Start()
     {
@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
     }
 
     void Update()
+    {
+    }
+
+    void FixedUpdate()
     {
         playerInput();
     }
