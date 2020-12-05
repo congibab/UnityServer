@@ -14,9 +14,12 @@ public class NetworkManger : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
+    [SerializeField]
+    private UiManger uiManger;
+
     //C++ = map class
     Dictionary<string, GameObject> players;
-    List<string> UUID_list = new List<string>();
+    //List<string> UUID_list = new List<string>();
 
     private bool is_starting;
 
@@ -43,6 +46,22 @@ public class NetworkManger : MonoBehaviour
 
 
         players = new Dictionary<string, GameObject>();
+        //Dictionary<string, int> test = new Dictionary<string, int>();
+        //test.Add("test1", 1);
+        //test.Add("test2", 2);
+        //test.Add("test3", 3);
+        //test.Add("test4", 4);
+        //foreach (KeyValuePair<string, int> pair in test)
+        //{
+        //    Debug.Log(pair.Key + " " + pair.Value);
+        //}
+
+        //test.Clear();
+        //test.Add("abcd", 12);
+        //foreach (KeyValuePair<string, int> pair in test)
+        //{
+        //    Debug.Log(pair.Key + " " + pair.Value);
+        //}
     }
 
     private IEnumerator NetworkConnect()
@@ -90,13 +109,20 @@ public class NetworkManger : MonoBehaviour
     {
         Debug.Log("Server disconnected: " + e.data);
         is_starting = false;
-        for (int i = 0; i < UUID_list.Count; i++)
+        //for (int i = 0; i < UUID_list.Count; i++)
+        //{
+        //    var player = players[UUID_list[i]];
+        //    Destroy(player);
+        //    players.Remove(UUID_list[i]);
+        //    UUID_list.RemoveAt(i);
+        //}
+        foreach (KeyValuePair<string, GameObject> pair in players)
         {
-            var player = players[UUID_list[i]];
-            Destroy(player);
-            players.Remove(UUID_list[i]);
-            UUID_list.RemoveAt(i);
+            Destroy(pair.Value);
+            //Debug.Log(pair.Key + " " + pair.Value);
         }
+        players.Clear();
+
         canvas.gameObject.SetActive(true);
     }
 
@@ -119,7 +145,7 @@ public class NetworkManger : MonoBehaviour
         players.Add(user.id, p);
         Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
-        UUID_list.Add(user.id);
+        //UUID_list.Add(user.id);
 
         p.GetComponent<Player>().UUID = user.id;
         p.GetComponent<Player>().is_Local = false;
@@ -140,7 +166,7 @@ public class NetworkManger : MonoBehaviour
         players.Add(user.id, p);
         Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
-        UUID_list.Add(user.id);
+        //UUID_list.Add(user.id);
 
         p.GetComponent<Player>().UUID = user.id;
         p.GetComponent<Player>().is_Local = true;
