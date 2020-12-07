@@ -19,3 +19,20 @@ public class UserJSON
         return JsonUtility.ToJson(data);
     }
 }
+
+[Serializable]
+public class RoomJSON
+{
+    public string name;
+    public string UUID;
+
+    public static RoomJSON CreateFromJSON(string data)
+    {
+        return JsonUtility.FromJson<RoomJSON>(data);
+    }
+
+    public static string CreateToJSON(RoomJSON data)
+    {
+        return JsonUtility.ToJson(data);
+    }
+}

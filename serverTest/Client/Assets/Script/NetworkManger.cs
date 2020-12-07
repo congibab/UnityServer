@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SocketIO;
+using System;
 
 public class NetworkManger : MonoBehaviour
 {
@@ -9,17 +10,18 @@ public class NetworkManger : MonoBehaviour
 
     [SerializeField]
     private SocketIOComponent socket;
-    [SerializeField]
-    private Canvas canvas;
-    [SerializeField]
-    private GameObject player;
+    //[SerializeField]
+    //private GameObject player;
 
     [SerializeField]
     private UiManger uiManger;
 
+    //=================================
     //C++ = map class
     Dictionary<string, GameObject> players;
     //List<string> UUID_list = new List<string>();
+    List<GameObject> RoomList = new List<GameObject>();
+    //=================================
 
     private bool is_starting;
 
@@ -44,6 +46,9 @@ public class NetworkManger : MonoBehaviour
         socket.On("requestPosition", OnRequestPosition);
         socket.On("UpdatePosition", OnUpdatePosition);
 
+        socket.On("UpdateRoomList", UpdateRoomList);
+        socket.On("InitPlayerid", InitPlayerid);
+
 
         players = new Dictionary<string, GameObject>();
         //Dictionary<string, int> test = new Dictionary<string, int>();
@@ -64,9 +69,9 @@ public class NetworkManger : MonoBehaviour
         //}
     }
 
+
     private IEnumerator NetworkConnect()
     {
-        canvas.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         socket.Emit("NetworkStart");
         yield return new WaitForSeconds(1.0f);
@@ -87,21 +92,18 @@ public class NetworkManger : MonoBehaviour
     public void TestOpen(SocketIOEvent e)
     {
         is_starting = false;
-        canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
     }
 
     public void TestError(SocketIOEvent e)
     {
         is_starting = false;
-        canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
     }
 
     public void TestClose(SocketIOEvent e)
     {
         is_starting = false;
-        canvas.gameObject.SetActive(true);
         Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
     }
 
@@ -122,8 +124,6 @@ public class NetworkManger : MonoBehaviour
             //Debug.Log(pair.Key + " " + pair.Value);
         }
         players.Clear();
-
-        canvas.gameObject.SetActive(true);
     }
 
     //====================================================
@@ -141,14 +141,14 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);
 
-        GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
-        players.Add(user.id, p);
-        Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+        //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
+        //players.Add(user.id, p);
+        //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
         //UUID_list.Add(user.id);
 
-        p.GetComponent<Player>().UUID = user.id;
-        p.GetComponent<Player>().is_Local = false;
+        //p.GetComponent<Player>().UUID = user.id;
+        //p.GetComponent<Player>().is_Local = false;
     }
 
     /// <summary>
@@ -161,15 +161,15 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);
 
-        GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
+        //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
 
-        players.Add(user.id, p);
-        Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+        //players.Add(user.id, p);
+        //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
         //UUID_list.Add(user.id);
 
-        p.GetComponent<Player>().UUID = user.id;
-        p.GetComponent<Player>().is_Local = true;
+        //p.GetComponent<Player>().UUID = user.id;
+        //p.GetComponent<Player>().is_Local = true;
     }
 
     public void OnDisconnected(SocketIOEvent e)
@@ -205,5 +205,21 @@ public class NetworkManger : MonoBehaviour
     }
     //===========================================
     //===========================================
+
+    public void UpdateRoomList(SocketIOEvent e)
+    {
+        Debug.Log("Server => Init Rooms" + e.data);
+        uiManger.UpdateRoom(e);
+    }
+
+    private void InitPlayerid(SocketIOEvent e)
+    {
+        Debug.Log("Server => Init UUID" + e.data);
+        string data = e.data.ToString();
+        UserJSON user = UserJSON.CreateFromJSON(data);
+
+        ClientStatus.UUID = user.id;
+    }
+
 }
 
