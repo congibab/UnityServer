@@ -25,7 +25,7 @@ io.on('connection', function (socket) {
 	var lobby = 'lobby';
 	socket.join(lobby);
 	console.log("Another user connection in lobbty :" + thisPlayerId);
-	
+
 	// var player = {
 	// 	Room: lobby,
 	// 	id: thisPlayerId,
@@ -34,13 +34,19 @@ io.on('connection', function (socket) {
 	// 	z: 0
 	// };
 
-	socket.emit("InitPlayerid", {id: thisPlayerId});
+	socket.emit("InitPlayerid", { id: thisPlayerId });
 
-	if (Rooms.length != 0) {
-		for (var i in Rooms) {
-			io.to(lobby).emit("UpdateRoomList", Rooms[i]);
-		}
+	// if (Rooms.length != 0) {
+	// 	for (var i in Rooms) {
+	// 		io.to(lobby).emit("UpdateRoomList", Rooms[i]);
+	// 	}
+	// }
+
+	for (var i in Rooms) {
+		io.to(lobby).emit("UpdateRoomList", Rooms[i]);
 	}
+
+
 
 	// socket.on('NetworkStart', () => {
 	// 	players[thisPlayerId] = player;
@@ -74,24 +80,31 @@ io.on('connection', function (socket) {
 			index: Rooms.length,
 			currnetUUID: [data.UUID, ''],
 		};
-		Rooms.push(Room);
+		//Rooms.push(Room);
+		Rooms[data.name] = Room;
 		//socket.emit('UpdateRoomList', data);
 		io.to(lobby).emit('UpdateRoomList', Room);
 	});
 
 	socket.on('joinRoom', function (data) {
 		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
-		
+
 		// var maching = {
 		// 	player1 : Rooms[data.index].UUID,
 		// 	player2 : data.UUID
 		// };
 
-		Rooms[data.index].currnetUUID[1] = data.UUID;
-		console.log(Rooms[data.index].currnetUUID);
+		// Rooms[data.index].currnetUUID[1] = data.UUID;
+		// console.log(Rooms[data.index].currnetUUID);
+		// socket.leave(lobby);
+		// socket.join(data.name);
+		// io.to(data.name).emit('test', Rooms[data.index]);
+
+		Rooms[data.name].currnetUUID[1] = data.UUID;
+		console.log(Rooms[data.name].currnetUUID);
 		socket.leave(lobby);
 		socket.join(data.name);
-		io.to(data.name).emit('test', Rooms[data.index]);
+		io.to(data.name).emit('test', Rooms[data.name]);
 	});
 
 	socket.on('disconnect', () => {
