@@ -717,7 +717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e25911007ab0646b88dd4baaf1d2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
   mainCanvas: {fileID: 923198590}
   inputField: {fileID: 135411802}
   Scroll_View_Content: {fileID: 876596042}
@@ -858,8 +857,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socket: {fileID: 1857003215}
-  canvas: {fileID: 923198590}
-  player: {fileID: 6038647908836695625, guid: 8577c3c9d6bf1134686fef3aa49b3c0e, type: 3}
   uiManger: {fileID: 369532837}
 --- !u!4 &721657682
 Transform:

@@ -14,8 +14,6 @@ public class UiManger : MonoBehaviour
     private NetworkManger networkManger;
 
     [SerializeField]
-    private GameObject test;
-    [SerializeField]
     private Canvas mainCanvas;
     [SerializeField]
     private InputField inputField;
@@ -38,25 +36,23 @@ public class UiManger : MonoBehaviour
     public void CreateRoom()
     {
         if (inputField.text == "") return;
-        //var obj = Instantiate(RoomOBJ) as GameObject;
-        //obj.transform.SetParent(Scroll_View_Content.transform);
-
-        //RectTransform rectTransform = obj.GetComponent<RectTransform>();
-        //Room room = obj.GetComponent<Room>();
-
-        //rectTransform.anchoredPosition3D = new Vector3(0, 0, 0);
-        //rectTransform.localScale = new Vector3(1, 1, 1);
-        //room.ID = inputField.text;
-        //room.uiManger = this;
-
-        //RoomList.Add(obj);
 
         RoomJSON data = new RoomJSON();
         data.name = inputField.text;
-//        data.UUID = 
+        data.UUID = ClientStatus.UUID;
+        data.currnetUUID[0] = ClientStatus.UUID;
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("creatRoom", new JSONObject(Data));
+
+        SceneManager.LoadScene("Game");
+        DontDestroyOnLoad(socket.gameObject);
+        DontDestroyOnLoad(networkManger.gameObject);
+        DontDestroyOnLoad(this.gameObject);
+
+        socket.Emit("joinRoom", new JSONObject(Data));
+
+
     }
 
     public void UpdateRoom(SocketIOEvent e)
@@ -72,14 +68,35 @@ public class UiManger : MonoBehaviour
 
         rectTransform.anchoredPosition3D = new Vector3(0, 0, 0);
         rectTransform.localScale = new Vector3(1, 1, 1);
-        room.Name = roomJSON.name;
         room.uiManger = this;
+        room.Name = roomJSON.name;
+        room.index = roomJSON.index;
+        room.UUID = roomJSON.UUID;
+        
+        room.currnetUUID.Add(roomJSON.UUID);
+
     }
 
-    public void join_Room()
+    /// <summary>
+    /// 
+    /// </summary>
+    public void join_Room(Room target)
     {
         SceneManager.LoadScene("Game");
         DontDestroyOnLoad(socket.gameObject);
         DontDestroyOnLoad(networkManger.gameObject);
+        DontDestroyOnLoad(this.gameObject);
+
+
+        RoomJSON data = new RoomJSON();
+        ClientStatus.currentingRoom = target.Name;
+        data.name = target.Name;
+        data.UUID = ClientStatus.UUID;
+        data.index = target.index;
+
+        data.currnetUUID[1] = ClientStatus.UUID;
+
+        string Data = RoomJSON.CreateToJSON(data);
+        socket.Emit("joinRoom", new JSONObject(Data));
     }
 }

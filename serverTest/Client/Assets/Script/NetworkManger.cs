@@ -43,11 +43,12 @@ public class NetworkManger : MonoBehaviour
         socket.On("OtherSpawn", OnOtherSpawn);
         socket.On("PlayableSpawn", OnplayableSpawn);
 
-        socket.On("requestPosition", OnRequestPosition);
         socket.On("UpdatePosition", OnUpdatePosition);
 
         socket.On("UpdateRoomList", UpdateRoomList);
         socket.On("InitPlayerid", InitPlayerid);
+
+        socket.On("test", GameInit);
 
 
         players = new Dictionary<string, GameObject>();
@@ -184,11 +185,6 @@ public class NetworkManger : MonoBehaviour
         players.Remove(user.id);
     }
 
-    public void OnRequestPosition(SocketIOEvent e)
-    {
-
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -203,9 +199,10 @@ public class NetworkManger : MonoBehaviour
         var player = players[user.id];
         player.transform.position = new Vector3(user.x, user.y, user.z);
     }
-    //===========================================
-    //===========================================
 
+    //===========================================
+    //Lobby CallBack function
+    //===========================================
     public void UpdateRoomList(SocketIOEvent e)
     {
         Debug.Log("Server => Init Rooms" + e.data);
@@ -217,9 +214,30 @@ public class NetworkManger : MonoBehaviour
         Debug.Log("Server => Init UUID" + e.data);
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);
-
         ClientStatus.UUID = user.id;
     }
+    //===========================================
+    //===========================================
 
+    //===========================================
+    //MainGame CallBack function
+    //===========================================
+    private void GameInit(SocketIOEvent e)
+    {
+        Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentingRoom);
+        string data = e.data.ToString();
+        Debug.Log(data);
+        RoomJSON roomJSON = RoomJSON.CreateFromJSON(data);
+        ClientStatus.currentUUID = roomJSON.currnetUUID;
+        Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[0]);
+        Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[1]);
+
+
+        //ClientStatus.currentUUID[0] = roomJSON.currnetUUID[0];
+        //ClientStatus.currentUUID[1] = roomJSON.currnetUUID[1];
+
+    }
+    //===========================================
+    //===========================================
 }
 

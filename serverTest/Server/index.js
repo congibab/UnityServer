@@ -21,29 +21,30 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
 
-	console.log("test");
 	var thisPlayerId = uuidv4();
-	var thisRoom = 'lobby';
-
-	var player = {
-		Room: thisRoom,
-		id: thisPlayerId,
-		x: 0,
-		y: 0,
-		z: 0
-	};
+	var lobby = 'lobby';
+	socket.join(lobby);
+	console.log("Another user connection in lobbty :" + thisPlayerId);
+	
+	// var player = {
+	// 	Room: lobby,
+	// 	id: thisPlayerId,
+	// 	x: 0,
+	// 	y: 0,
+	// 	z: 0
+	// };
 
 	socket.emit("InitPlayerid", {id: thisPlayerId});
 
 	if (Rooms.length != 0) {
 		for (var i in Rooms) {
-			socket.emit("UpdateRoomList", Rooms[i]);
+			io.to(lobby).emit("UpdateRoomList", Rooms[i]);
 		}
 	}
 
 	// socket.on('NetworkStart', () => {
 	// 	players[thisPlayerId] = player;
-	// 	players[thisRoom] = player;
+	// 	players[lobby] = player;
 	// 	//=======
 	// 	console.log('Client connected, broadcast ing spawn, id: ', thisPlayerId);
 	// 	socket.broadcast.emit('OtherSpawn', { id: thisPlayerId });
@@ -67,21 +68,36 @@ io.on('connection', function (socket) {
 	// });
 
 	socket.on('creatRoom', function (data) {
-		console.log(data);
+		//console.log(data);
 		var Room = {
 			name: data.name,
-			UUID:  data.UUID
+			index: Rooms.length,
+			currnetUUID: [data.UUID, ''],
 		};
-		//Rooms[data.Roomid] = Room;
 		Rooms.push(Room);
-		console.log(Rooms);
-		socket.emit('UpdateRoomList', data);
-		socket.broadcast.emit('UpdateRoomList', data);
+		//socket.emit('UpdateRoomList', data);
+		io.to(lobby).emit('UpdateRoomList', Room);
+	});
+
+	socket.on('joinRoom', function (data) {
+		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
+		
+		// var maching = {
+		// 	player1 : Rooms[data.index].UUID,
+		// 	player2 : data.UUID
+		// };
+
+		Rooms[data.index].currnetUUID[1] = data.UUID;
+		console.log(Rooms[data.index].currnetUUID);
+		socket.leave(lobby);
+		socket.join(data.name);
+		io.to(data.name).emit('test', Rooms[data.index]);
 	});
 
 	socket.on('disconnect', () => {
 		// console.log('recv: player disconnected: ' + thisPlayerId);
 		// delete players[thisPlayerId];
 		// socket.broadcast.emit('disconnected', { id: thisPlayerId });
+		console.log('some user disconnection');
 	});
 });

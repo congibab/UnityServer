@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -25,6 +26,8 @@ public class RoomJSON
 {
     public string name;
     public string UUID;
+    public int index;
+    public string[] currnetUUID = new string[2];
 
     public static RoomJSON CreateFromJSON(string data)
     {
