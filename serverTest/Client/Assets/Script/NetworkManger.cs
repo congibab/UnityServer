@@ -45,8 +45,8 @@ public class NetworkManger : MonoBehaviour
         socket.On("disconnect", TestDisconnect);
         socket.On("disconnected", OnDisconnected);
 
-        socket.On("OtherSpawn", OnOtherSpawn);
-        socket.On("PlayableSpawn", OnplayableSpawn);
+        //socket.On("OtherSpawn", OnOtherSpawn);
+        //socket.On("PlayableSpawn", OnplayableSpawn);
 
         socket.On("UpdatePosition", OnUpdatePosition);
 
@@ -135,48 +135,48 @@ public class NetworkManger : MonoBehaviour
     //====================================================
     //====================================================
 
-    /// <summary>
-    /// none Playable object
-    /// </summary>
-    /// <param name="e"></param>
-    public void OnOtherSpawn(SocketIOEvent e)
-    {
-        if (!is_starting) return;
+    ///// <summary>
+    ///// none Playable object
+    ///// </summary>
+    ///// <param name="e"></param>
+    //public void OnOtherSpawn(SocketIOEvent e)
+    //{
+    //    if (!is_starting) return;
 
-        Debug.Log("Spawn spawned" + e.data);
-        string data = e.data.ToString();
-        UserJSON user = UserJSON.CreateFromJSON(data);
+    //    Debug.Log("Spawn spawned" + e.data);
+    //    string data = e.data.ToString();
+    //    UserJSON user = UserJSON.CreateFromJSON(data);
 
-        //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
-        //players.Add(user.id, p);
-        //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+    //    //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
+    //    //players.Add(user.id, p);
+    //    //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
-        //UUID_list.Add(user.id);
+    //    //UUID_list.Add(user.id);
 
-        //p.GetComponent<Player>().UUID = user.id;
-        //p.GetComponent<Player>().is_Local = false;
-    }
+    //    //p.GetComponent<Player>().UUID = user.id;
+    //    //p.GetComponent<Player>().is_Local = false;
+    //}
 
-    /// <summary>
-    /// Playable object
-    /// </summary>
-    /// <param name="e"></param>
-    public void OnplayableSpawn(SocketIOEvent e)
-    {
-        Debug.Log("Playable spawned" + e.data);
-        string data = e.data.ToString();
-        UserJSON user = UserJSON.CreateFromJSON(data);
+    ///// <summary>
+    ///// Playable object
+    ///// </summary>
+    ///// <param name="e"></param>
+    //public void OnplayableSpawn(SocketIOEvent e)
+    //{
+    //    Debug.Log("Playable spawned" + e.data);
+    //    string data = e.data.ToString();
+    //    UserJSON user = UserJSON.CreateFromJSON(data);
 
-        //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
+    //    //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
 
-        //players.Add(user.id, p);
-        //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
+    //    //players.Add(user.id, p);
+    //    //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
 
-        //UUID_list.Add(user.id);
+    //    //UUID_list.Add(user.id);
 
-        //p.GetComponent<Player>().UUID = user.id;
-        //p.GetComponent<Player>().is_Local = true;
-    }
+    //    //p.GetComponent<Player>().UUID = user.id;
+    //    //p.GetComponent<Player>().is_Local = true;
+    //}
 
     public void OnDisconnected(SocketIOEvent e)
     {
@@ -201,8 +201,9 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);
 
-        var player = players[user.id];
-        player.transform.position = new Vector3(user.x, user.y, user.z);
+        gameMangerOBJ.GetComponent<GameManger>().Players[user.id].transform.position = new Vector3(user.x, user.y, user.z);
+        //var player = players[user.id];
+        //player.transform.position = new Vector3(user.x, user.y, user.z);
     }
 
     //===========================================
@@ -234,10 +235,10 @@ public class NetworkManger : MonoBehaviour
         Debug.Log(data);
         RoomJSON roomJSON = RoomJSON.CreateFromJSON(data);
         ClientStatus.currentUUID = roomJSON.currnetUUID;
-        Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[0]);
-        Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[1]);
-
-        if(gameMangerOBJ == null) gameMangerOBJ = Instantiate(gameMangerPrefab);
+        if (gameMangerOBJ == null)
+        {
+            gameMangerOBJ = Instantiate(gameMangerPrefab);
+        }
     }
     //===========================================
     //===========================================

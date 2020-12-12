@@ -46,3 +46,5 @@ MonoBehaviour:
   currentUUID:
   - 
   - 
+  PlayerPrefab: {fileID: 6038647908836695625, guid: 8577c3c9d6bf1134686fef3aa49b3c0e,
+    type: 3}

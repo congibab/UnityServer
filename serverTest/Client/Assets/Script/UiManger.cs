@@ -40,6 +40,7 @@ public class UiManger : MonoBehaviour
         if (inputField.text == "") return;
 
         RoomJSON data = new RoomJSON();
+        ClientStatus.currentingRoom = inputField.text;
         data.name = inputField.text;
         data.UUID = ClientStatus.UUID;
        // data.currnetUUID[0] = ClientStatus.UUID;
@@ -73,7 +74,7 @@ public class UiManger : MonoBehaviour
         room.Name = roomJSON.name;
         room.index = roomJSON.index;
         room.UUID = roomJSON.UUID;
-        room.currnetUUID.Add(roomJSON.UUID);
+        //room.currnetUUID.Add(roomJSON.UUID);
 
         Rooms[room.Name] = obj; 
     }

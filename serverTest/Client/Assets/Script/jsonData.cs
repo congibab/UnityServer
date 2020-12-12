@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class UserJSON
 {
+    public string RoomName;
     public string id;
     public float x;
     public float y;

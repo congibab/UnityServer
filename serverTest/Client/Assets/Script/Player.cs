@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public string UUID;
 
     private Vector3 Pos;
-    public bool is_Local;
+    public bool is_Local = false;
 
     void Awake()
     {
@@ -32,48 +32,54 @@ public class Player : MonoBehaviour
 
     void playerInput()
     {
-        if (Input.GetKey(KeyCode.A) && is_Local)
+        if (!is_Local) return;
+
+        if (Input.GetKey(KeyCode.A))
         {
             UserJSON data = new UserJSON();
+            data.RoomName = ClientStatus.currentingRoom;
             data.id = UUID;
             data.x = transform.position.x - Time.deltaTime;
             data.y = transform.position.y;
             data.z = transform.position.z;
             string user = UserJSON.CreateToJSON(data);
-            socket.Emit("Movement", new JSONObject(user));
+            socket.Emit("MovementRequest", new JSONObject(user));
         }
 
-        if (Input.GetKey(KeyCode.D) && is_Local)
+        if (Input.GetKey(KeyCode.D))
         {
             UserJSON data = new UserJSON();
+            data.RoomName = ClientStatus.currentingRoom;
             data.id = UUID;
             data.x = transform.position.x + Time.deltaTime;
             data.y = transform.position.y;
             data.z = transform.position.z;
             string user = UserJSON.CreateToJSON(data);
-            socket.Emit("Movement", new JSONObject(user));
+            socket.Emit("MovementRequest", new JSONObject(user));
         }
 
-        if (Input.GetKey(KeyCode.W) && is_Local)
+        if (Input.GetKey(KeyCode.W))
         {
             UserJSON data = new UserJSON();
+            data.RoomName = ClientStatus.currentingRoom;
             data.id = UUID;
             data.x = transform.position.x;
             data.y = transform.position.y + Time.deltaTime;
             data.z = transform.position.z;
             string user = UserJSON.CreateToJSON(data);
-            socket.Emit("Movement", new JSONObject(user));
+            socket.Emit("MovementRequest", new JSONObject(user));
         }
 
-        if (Input.GetKey(KeyCode.S) && is_Local)
+        if (Input.GetKey(KeyCode.S))
         {
             UserJSON data = new UserJSON();
+            data.RoomName = ClientStatus.currentingRoom;
             data.id = UUID;
             data.x = transform.position.x;
             data.y = transform.position.y - Time.deltaTime;
             data.z = transform.position.z;
             string user = UserJSON.CreateToJSON(data);
-            socket.Emit("Movement", new JSONObject(user));
+            socket.Emit("MovementRequest", new JSONObject(user));
         }
     }
 }
