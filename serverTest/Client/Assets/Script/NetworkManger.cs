@@ -8,6 +8,7 @@ public class NetworkManger : MonoBehaviour
 {
     static public NetworkManger instance;
 
+
     [SerializeField]
     private SocketIOComponent socket;
     //[SerializeField]
@@ -15,6 +16,10 @@ public class NetworkManger : MonoBehaviour
 
     [SerializeField]
     private UiManger uiManger;
+
+    [SerializeField]
+    private GameObject gameMangerPrefab;
+    private GameObject gameMangerOBJ;
 
     //=================================
     //C++ = map class
@@ -48,7 +53,7 @@ public class NetworkManger : MonoBehaviour
         socket.On("UpdateRoomList", UpdateRoomList);
         socket.On("InitPlayerid", InitPlayerid);
 
-        socket.On("test", GameInit);
+        socket.On("GameInit", GameInit);
 
 
         players = new Dictionary<string, GameObject>();
@@ -232,10 +237,7 @@ public class NetworkManger : MonoBehaviour
         Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[0]);
         Debug.Log("Server => Welcom to the Room of " + ClientStatus.currentUUID[1]);
 
-
-        //ClientStatus.currentUUID[0] = roomJSON.currnetUUID[0];
-        //ClientStatus.currentUUID[1] = roomJSON.currnetUUID[1];
-
+        if(gameMangerOBJ == null) gameMangerOBJ = Instantiate(gameMangerPrefab);
     }
     //===========================================
     //===========================================

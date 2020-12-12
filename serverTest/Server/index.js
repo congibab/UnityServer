@@ -5,6 +5,8 @@ const { v4: uuidv4 } = require('uuid');
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+
+var colors = require('colors/safe');
 //=======================================
 //=======================================
 
@@ -12,7 +14,7 @@ var players = [];
 var Rooms = [];
 
 server.listen(3000, () => {
-	console.log('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
+	console.log(colors.rainbow('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket'));
 });
 
 app.get('/', function (req, res) {
@@ -24,7 +26,7 @@ io.on('connection', function (socket) {
 	var thisPlayerId = uuidv4();
 	var lobby = 'lobby';
 	socket.join(lobby);
-	console.log("Another user connection in lobbty :" + thisPlayerId);
+	console.log(colors.yellow("Another user connection in lobbty :" + thisPlayerId));
 
 	// var player = {
 	// 	Room: lobby,
@@ -74,11 +76,11 @@ io.on('connection', function (socket) {
 	// });
 
 	socket.on('creatRoom', function (data) {
-		//console.log(data);
+		console.log(colors.magenta('create room' + data));
 		var Room = {
 			name: data.name,
-			index: Rooms.length,
-			currnetUUID: [data.UUID, ''],
+			//currnetUUID: [data.UUID, ''],
+			currnetUUID: ['', ''],
 		};
 		//Rooms.push(Room);
 		Rooms[data.name] = Room;
@@ -87,7 +89,7 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('joinRoom', function (data) {
-		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
+		console.log(colors.blue('joinRoom : ' + data.name + ' UUID : ' + data.UUID));
 
 		// var maching = {
 		// 	player1 : Rooms[data.index].UUID,
@@ -100,17 +102,34 @@ io.on('connection', function (socket) {
 		// socket.join(data.name);
 		// io.to(data.name).emit('test', Rooms[data.index]);
 
-		Rooms[data.name].currnetUUID[1] = data.UUID;
-		console.log(Rooms[data.name].currnetUUID);
+		//Rooms[data.name].currnetUUID[1] = data.UUID;
+		if (Rooms[data.name].currnetUUID[0] == '') {
+			Rooms[data.name].currnetUUID[0] = data.UUID;
+		}
+
+		else if (Rooms[data.name].currnetUUID[0] != '') {
+			Rooms[data.name].currnetUUID[1] = data.UUID;
+		}
+
+		console.log(colors.blue(Rooms[data.name].currnetUUID));
 		socket.leave(lobby);
 		socket.join(data.name);
-		io.to(data.name).emit('test', Rooms[data.name]);
+		io.to(data.name).emit('GameInit', Rooms[data.name]);
+		//delete[Rooms[data.name]];
+		socket.emit('RemoveRoom', {});
+		//delete Rooms[data.name];
+	});
+
+	socket.on('joinRoom', function (data) {
+
 	});
 
 	socket.on('disconnect', () => {
 		// console.log('recv: player disconnected: ' + thisPlayerId);
 		// delete players[thisPlayerId];
 		// socket.broadcast.emit('disconnected', { id: thisPlayerId });
-		console.log('some user disconnection');
+		console.log(colors.red('some user disconnection'));
 	});
 });
+
+//172.19.78.102

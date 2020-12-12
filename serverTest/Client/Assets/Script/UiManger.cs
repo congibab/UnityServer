@@ -22,6 +22,8 @@ public class UiManger : MonoBehaviour
     [SerializeField]
     private GameObject RoomOBJ;
 
+    private Dictionary<string, GameObject> Rooms;
+
     void Awake()
     {
         socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
@@ -30,7 +32,7 @@ public class UiManger : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void CreateRoom()
@@ -40,19 +42,18 @@ public class UiManger : MonoBehaviour
         RoomJSON data = new RoomJSON();
         data.name = inputField.text;
         data.UUID = ClientStatus.UUID;
-        data.currnetUUID[0] = ClientStatus.UUID;
+       // data.currnetUUID[0] = ClientStatus.UUID;
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("creatRoom", new JSONObject(Data));
 
-        SceneManager.LoadScene("Game");
-        DontDestroyOnLoad(socket.gameObject);
-        DontDestroyOnLoad(networkManger.gameObject);
-        DontDestroyOnLoad(this.gameObject);
+        //SceneManager.LoadScene("Game");
+        //DontDestroyOnLoad(socket.gameObject);
+        //DontDestroyOnLoad(networkManger.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         socket.Emit("joinRoom", new JSONObject(Data));
-
-
+        mainCanvas.gameObject.SetActive(false);
     }
 
     public void UpdateRoom(SocketIOEvent e)
@@ -72,9 +73,9 @@ public class UiManger : MonoBehaviour
         room.Name = roomJSON.name;
         room.index = roomJSON.index;
         room.UUID = roomJSON.UUID;
-        
         room.currnetUUID.Add(roomJSON.UUID);
 
+        Rooms[room.Name] = obj; 
     }
 
     /// <summary>
@@ -82,11 +83,10 @@ public class UiManger : MonoBehaviour
     /// </summary>
     public void join_Room(Room target)
     {
-        SceneManager.LoadScene("Game");
-        DontDestroyOnLoad(socket.gameObject);
-        DontDestroyOnLoad(networkManger.gameObject);
-        DontDestroyOnLoad(this.gameObject);
-
+        //SceneManager.LoadScene("Game");
+        //DontDestroyOnLoad(socket.gameObject);
+        //DontDestroyOnLoad(networkManger.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         RoomJSON data = new RoomJSON();
         ClientStatus.currentingRoom = target.Name;
@@ -94,9 +94,20 @@ public class UiManger : MonoBehaviour
         data.UUID = ClientStatus.UUID;
         data.index = target.index;
 
-        data.currnetUUID[1] = ClientStatus.UUID;
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("joinRoom", new JSONObject(Data));
+        mainCanvas.gameObject.SetActive(false);
+
+        //Destroy(Rooms[target.name]);
+    }
+
+    void OnGUI()
+    {
+        string UUID = ClientStatus.currentUUID[0].ToString();
+        GUI.Box(new Rect(20, 10, 250, 25), UUID);
+        
+        string UUID1 = ClientStatus.currentUUID[1].ToString();
+        GUI.Box(new Rect(Screen.width - 250, 10, 250, 25), UUID1);
     }
 }

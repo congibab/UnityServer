@@ -6,21 +6,17 @@ using SocketIO;
 public class GameManger : MonoBehaviour
 {
     [SerializeField]
-    public string[] currentUUIC = new string[2];
+    private string[] currentUUID = new string[2];
 
-    [SerializeField]
-    private string Player1;
-    [SerializeField]
-    private string Player2;
-    // Start is called before the first frame update
     void Start()
     {
-   
+        currentUUID[0] = ClientStatus.currentUUID[0];
+        currentUUID[1] = ClientStatus.currentUUID[1];
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
+
 }
