@@ -6,7 +6,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-var colors = require('colors/safe');
+var consola = require('consola');
 //=======================================
 //=======================================
 
@@ -14,7 +14,8 @@ var players = [];
 var Rooms = [];
 
 server.listen(3000, () => {
-	console.log(colors.rainbow('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket'));
+	console.log('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
+	consola.success('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
 });
 
 app.get('/', function (req, res) {
@@ -26,7 +27,7 @@ io.on('connection', function (socket) {
 	var thisPlayerId = uuidv4();
 	var lobby = 'lobby';
 	socket.join(lobby);
-	console.log(colors.yellow("Another user connection in lobbty :" + thisPlayerId));
+	console.log("Another user connection in lobbty :" + thisPlayerId);
 
 	// var player = {
 	// 	Room: lobby,
@@ -43,7 +44,7 @@ io.on('connection', function (socket) {
 	}
 
 	socket.on('creatRoom', function (data) {
-		console.log(colors.magenta('create room' + data));
+		console.log('create room' + data);
 		var Room = {
 			name: data.name,
 			//currnetUUID: [data.UUID, ''],
@@ -56,7 +57,7 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('joinRoom', function (data) {
-		console.log(colors.blue('joinRoom : ' + data.name + ' UUID : ' + data.UUID));
+		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
 
 		if (Rooms[data.name].currnetUUID[0] == '') {
 			Rooms[data.name].currnetUUID[0] = data.UUID;
@@ -66,7 +67,7 @@ io.on('connection', function (socket) {
 			Rooms[data.name].currnetUUID[1] = data.UUID;
 		}
 
-		console.log(colors.blue(Rooms[data.name].currnetUUID));
+		console.log(Rooms[data.name].currnetUUID);
 		socket.leave(lobby);
 		socket.join(data.name);
 		
@@ -89,7 +90,7 @@ io.on('connection', function (socket) {
 	// });
 
 	socket.on('MovementRequest', function (data){
-		console.log(colors.blue(data));
+		console.log(data);
 		io.to(data.RoomName).emit('UpdatePosition', data);
 	});
 
@@ -97,7 +98,7 @@ io.on('connection', function (socket) {
 		// console.log('recv: player disconnected: ' + thisPlayerId);
 		// delete players[thisPlayerId];
 		// socket.broadcast.emit('disconnected', { id: thisPlayerId });
-		console.log(colors.red('some user disconnection'));
+		console.log('some user disconnection');
 	});
 });
 

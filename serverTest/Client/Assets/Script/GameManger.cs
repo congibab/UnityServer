@@ -12,10 +12,20 @@ public class GameManger : MonoBehaviour
     private GameObject PlayerPrefab;
     [SerializeField]
     public Dictionary<string, GameObject> Players = new Dictionary<string, GameObject>();
+    [SerializeField]
+    Transform GameCanvas;
+
+    private Vector3[] RespawnPosint = new Vector3[2];
+
+    void Awake()
+    {
+        GameCanvas = GameObject.Find("GameCanvas").GetComponent<Transform>();
+    }
 
     void Start()
     {
-        //GameInit();
+        RespawnPosint[0] = new Vector3(-800, 0, 0);
+        RespawnPosint[1] = new Vector3(800, 0, 0);
         StartCoroutine(GameInit());
     }
 
@@ -41,14 +51,16 @@ public class GameManger : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            var obj = Instantiate(PlayerPrefab);
+            var obj = Instantiate(PlayerPrefab, GameCanvas) as GameObject;
+            //obj.transform.SetParent(GameCanvas.transform);
+
             var player = obj.GetComponent<Player>();
             player.UUID = currentUUID[i];
             
-            if (player.UUID == ClientStatus.UUID)
-            {
-                player.is_Local = true;
-            }
+            //if (player.UUID == ClientStatus.UUID)
+            //{
+            //    player.is_Local = true;
+            //}
 
             Players.Add(currentUUID[i], obj);
 
