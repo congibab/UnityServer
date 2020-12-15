@@ -24,8 +24,8 @@ public class GameManger : MonoBehaviour
 
     void Start()
     {
-        RespawnPosint[0] = new Vector3(-800, 0, 0);
-        RespawnPosint[1] = new Vector3(800, 0, 0);
+        RespawnPosint[0] = new Vector3(-9, 0, 0);
+        RespawnPosint[1] = new Vector3(9, 0, 0);
         StartCoroutine(GameInit());
     }
 
@@ -51,7 +51,7 @@ public class GameManger : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            var obj = Instantiate(PlayerPrefab, GameCanvas) as GameObject;
+            var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
             //obj.transform.SetParent(GameCanvas.transform);
 
             var player = obj.GetComponent<Player>();
