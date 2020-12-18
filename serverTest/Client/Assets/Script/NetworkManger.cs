@@ -50,6 +50,7 @@ public class NetworkManger : MonoBehaviour
 
         socket.On("UpdatePosition", OnUpdatePosition);
         socket.On("UpdateBallPosition", OnUpdataBallPosition);
+        socket.On("BallPositionReset", OnballPositionReset);
 
         socket.On("UpdateRoomList", UpdateRoomList);
         socket.On("InitPlayerid", InitPlayerid);
@@ -137,49 +138,6 @@ public class NetworkManger : MonoBehaviour
     //====================================================
     //====================================================
 
-    ///// <summary>
-    ///// none Playable object
-    ///// </summary>
-    ///// <param name="e"></param>
-    //public void OnOtherSpawn(SocketIOEvent e)
-    //{
-    //    if (!is_starting) return;
-
-    //    Debug.Log("Spawn spawned" + e.data);
-    //    string data = e.data.ToString();
-    //    UserJSON user = UserJSON.CreateFromJSON(data);
-
-    //    //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
-    //    //players.Add(user.id, p);
-    //    //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
-
-    //    //UUID_list.Add(user.id);
-
-    //    //p.GetComponent<Player>().UUID = user.id;
-    //    //p.GetComponent<Player>().is_Local = false;
-    //}
-
-    ///// <summary>
-    ///// Playable object
-    ///// </summary>
-    ///// <param name="e"></param>
-    //public void OnplayableSpawn(SocketIOEvent e)
-    //{
-    //    Debug.Log("Playable spawned" + e.data);
-    //    string data = e.data.ToString();
-    //    UserJSON user = UserJSON.CreateFromJSON(data);
-
-    //    //GameObject p = Instantiate(player, Vector3.zero, Quaternion.identity) as GameObject;
-
-    //    //players.Add(user.id, p);
-    //    //Debug.Log("player count: " + players.Count + "// playerID: " + user.id);
-
-    //    //UUID_list.Add(user.id);
-
-    //    //p.GetComponent<Player>().UUID = user.id;
-    //    //p.GetComponent<Player>().is_Local = true;
-    //}
-
     public void OnDisconnected(SocketIOEvent e)
     {
         Debug.Log("Client disconnected: " + e.data);
@@ -213,8 +171,14 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         BallJSON user = BallJSON.CreateFromJSON(data);
         gameMangerOBJ.GetComponent<GameManger>().Ball.GetComponent<Ball>().Dir = new Vector3(user.Dir_X, user.Dir_Y, user.Dir_Z);
-        gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
         //gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
+    }
+
+    public void OnballPositionReset(SocketIOEvent e)
+    {
+        string data = e.data.ToString();
+        BallJSON user = BallJSON.CreateFromJSON(data);
+        gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
     }
 
     //===========================================

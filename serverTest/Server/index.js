@@ -95,6 +95,13 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('BallMovementRequest', function (data){
+		consola.log('BallMovementRequest');
+		console.log(data);
+		io.to(data.RoomName).emit('UpdateBallPosition', data);
+	});
+
+	socket.on('BallPositionReset', function (data){
+		consola.log('BallReset');
 		console.log(data);
 		io.to(data.RoomName).emit('UpdateBallPosition', data);
 	});

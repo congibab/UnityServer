@@ -20,6 +20,7 @@ public class GameManger : MonoBehaviour
 
     void Awake()
     {
+        ClientStatus.GameOver = false;
     }
 
     void Start()
@@ -52,16 +53,10 @@ public class GameManger : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
-            //obj.transform.SetParent(GameCanvas.transform);
 
             var player = obj.GetComponent<Player>();
             player.UUID = currentUUID[i];
             
-            //if (player.UUID == ClientStatus.UUID)
-            //{
-            //    player.is_Local = true;
-            //}
-
             Players.Add(currentUUID[i], obj);
         }
 
