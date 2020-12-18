@@ -35,6 +35,31 @@ public class GameManger : MonoBehaviour
     }
 
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GameInit()
+    {
+
+        var Name = ClientStatus.UUID;
+
+        yield return null;
+
+        currentUUID[0] = ClientStatus.currentUUID[0];
+
+        for (int i = 0; i < 2; i++)
+        {
+            var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
+
+            var player = obj.GetComponent<Player>();
+            player.UUID = currentUUID[i];
+
+            Players.Add(currentUUID[i], obj);
+        }
+    }
+#else
     /// <summary>
     /// 
     /// </summary>
@@ -48,23 +73,18 @@ public class GameManger : MonoBehaviour
 
         currentUUID[0] = ClientStatus.currentUUID[0];
         currentUUID[1] = ClientStatus.currentUUID[1];
-
+         
         for (int i = 0; i < 2; i++)
         {
             var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
-            //obj.transform.SetParent(GameCanvas.transform);
 
             var player = obj.GetComponent<Player>();
             player.UUID = currentUUID[i];
             
-            //if (player.UUID == ClientStatus.UUID)
-            //{
-            //    player.is_Local = true;
-            //}
-
             Players.Add(currentUUID[i], obj);
 
             
         }
     }
+#endif
 }

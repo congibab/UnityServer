@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private Vector3 Dir = new Vector3(0, 0, 0);
     [SerializeField]
     private float MoveSpeed = 10.0f;
+    [SerializeField]
+    private Material[] material;
 
     void Awake()
     {
@@ -19,6 +21,26 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        Renderer rend = GetComponent<Renderer>();
+
+        //for(int i = 0; i < ClientStatus.currentUUID.Length; i++)
+        //{
+        //    if (ClientStatus.currentUUID[i] == UUID)
+        //    {
+        //        rend.material = material[i];
+        //        break;
+        //    }
+        //}
+
+        if (ClientStatus.UUID == UUID)
+        {
+            rend.material = material[0];
+        }
+
+        else
+        {
+            rend.material = material[1];
+        }
     }
 
     void Update()
