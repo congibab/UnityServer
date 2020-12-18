@@ -11,15 +11,15 @@ public class GameManger : MonoBehaviour
     [SerializeField]
     private GameObject PlayerPrefab;
     [SerializeField]
+    private GameObject BallPrefab;
+
     public Dictionary<string, GameObject> Players = new Dictionary<string, GameObject>();
-    [SerializeField]
-    Transform GameCanvas;
+    public GameObject Ball;
 
     private Vector3[] RespawnPosint = new Vector3[2];
 
     void Awake()
     {
-        GameCanvas = GameObject.Find("GameCanvas").GetComponent<Transform>();
     }
 
     void Start()
@@ -63,8 +63,8 @@ public class GameManger : MonoBehaviour
             //}
 
             Players.Add(currentUUID[i], obj);
-
-            
         }
+
+        Ball = Instantiate(BallPrefab, new Vector3(0,0,0), Quaternion.identity) as GameObject;
     }
 }

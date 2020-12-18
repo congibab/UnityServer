@@ -94,6 +94,11 @@ io.on('connection', function (socket) {
 		io.to(data.RoomName).emit('UpdatePosition', data);
 	});
 
+	socket.on('BallMovementRequest', function (data){
+		console.log(data);
+		io.to(data.RoomName).emit('UpdateBallPosition', data);
+	});
+
 	socket.on('disconnect', () => {
 		// console.log('recv: player disconnected: ' + thisPlayerId);
 		// delete players[thisPlayerId];

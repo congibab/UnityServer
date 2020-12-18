@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
         //    string user = UserJSON.CreateToJSON(data);
         //    socket.Emit("MovementRequest", new JSONObject(user));
         //}
-
         if (Input.GetKey(KeyCode.W))
         {
             Dir = new Vector3(0, 1, 0);

@@ -49,10 +49,12 @@ public class NetworkManger : MonoBehaviour
         //socket.On("PlayableSpawn", OnplayableSpawn);
 
         socket.On("UpdatePosition", OnUpdatePosition);
+        socket.On("UpdateBallPosition", OnUpdataBallPosition);
 
         socket.On("UpdateRoomList", UpdateRoomList);
         socket.On("InitPlayerid", InitPlayerid);
 
+        
         socket.On("GameInit", GameInit);
 
 
@@ -204,6 +206,15 @@ public class NetworkManger : MonoBehaviour
         gameMangerOBJ.GetComponent<GameManger>().Players[user.id].transform.position = new Vector3(user.x, user.y, user.z);
         //var player = players[user.id];
         //player.transform.position = new Vector3(user.x, user.y, user.z);
+    }
+
+    public void OnUpdataBallPosition(SocketIOEvent e)
+    {
+        string data = e.data.ToString();
+        BallJSON user = BallJSON.CreateFromJSON(data);
+        gameMangerOBJ.GetComponent<GameManger>().Ball.GetComponent<Ball>().Dir = new Vector3(user.Dir_X, user.Dir_Y, user.Dir_Z);
+        gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
+        //gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
     }
 
     //===========================================
