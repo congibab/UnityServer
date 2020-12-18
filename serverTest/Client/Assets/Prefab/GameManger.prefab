@@ -50,7 +50,8 @@ MonoBehaviour:
   - 
   PlayerPrefab: {fileID: 6038647908836695625, guid: 8577c3c9d6bf1134686fef3aa49b3c0e,
     type: 3}
-  GameCanvas: {fileID: 0}
+  BallPrefab: {fileID: 1129551299420498448, guid: 97282c248dcae5843acd1f5f886aaccf,
+    type: 3}
 --- !u!1 &4124410800161454469
 GameObject:
   m_ObjectHideFlags: 0

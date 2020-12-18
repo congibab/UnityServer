@@ -40,3 +40,26 @@ public class RoomJSON
         return JsonUtility.ToJson(data);
     }
 }
+
+[Serializable]
+public class BallJSON
+{
+    public string RoomName;
+    public float x;
+    public float y;
+    public float z;
+
+    public float Dir_X;
+    public float Dir_Y;
+    public float Dir_Z;
+
+    public static BallJSON CreateFromJSON(string data)
+    {
+        return JsonUtility.FromJson<BallJSON>(data);
+    }
+
+    public static string CreateToJSON(BallJSON data)
+    {
+        return JsonUtility.ToJson(data);
+    }
+}
