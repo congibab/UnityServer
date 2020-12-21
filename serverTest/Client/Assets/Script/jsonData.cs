@@ -63,3 +63,20 @@ public class BallJSON
         return JsonUtility.ToJson(data);
     }
 }
+
+[Serializable]
+public class GameSYS_JSON
+{
+    public string RoomName;
+    public int[] score = { 0, 0 };
+
+    public static GameSYS_JSON CreateFromJSON(string data)
+    {
+        return JsonUtility.FromJson<GameSYS_JSON>(data);
+    }
+
+    public static string CreateToJSON(GameSYS_JSON data)
+    {
+        return JsonUtility.ToJson(data);
+    }
+}

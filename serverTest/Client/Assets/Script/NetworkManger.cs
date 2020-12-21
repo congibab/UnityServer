@@ -12,7 +12,8 @@ public class NetworkManger : MonoBehaviour
     [SerializeField]
     private SocketIOComponent socket;
     //[SerializeField]
-    //private GameObject player;
+    //private GameObject SocketIOPrefab;
+    //GameObject test;
 
     [SerializeField]
     private UiManger uiManger;
@@ -42,15 +43,13 @@ public class NetworkManger : MonoBehaviour
         socket.On("error", TestError);
         socket.On("close", TestClose);
 
-        socket.On("disconnect", TestDisconnect);
-        socket.On("disconnected", OnDisconnected);
-
         //socket.On("OtherSpawn", OnOtherSpawn);
         //socket.On("PlayableSpawn", OnplayableSpawn);
 
         socket.On("UpdatePosition", OnUpdatePosition);
         socket.On("UpdateBallPosition", OnUpdataBallPosition);
-        socket.On("BallPositionReset", OnballPositionReset);
+        socket.On("ballPositionReset", OnballPositionReset);
+        socket.On("UpdateSore", OnUpdateSore);
 
         socket.On("UpdateRoomList", UpdateRoomList);
         socket.On("InitPlayerid", InitPlayerid);
@@ -116,39 +115,9 @@ public class NetworkManger : MonoBehaviour
         Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
     }
 
-    public void TestDisconnect(SocketIOEvent e)
-    {
-        Debug.Log("Server disconnected: " + e.data);
-        is_starting = false;
-        //for (int i = 0; i < UUID_list.Count; i++)
-        //{
-        //    var player = players[UUID_list[i]];
-        //    Destroy(player);
-        //    players.Remove(UUID_list[i]);
-        //    UUID_list.RemoveAt(i);
-        //}
-        foreach (KeyValuePair<string, GameObject> pair in players)
-        {
-            Destroy(pair.Value);
-            //Debug.Log(pair.Key + " " + pair.Value);
-        }
-        players.Clear();
-    }
-
     //====================================================
     //====================================================
 
-    public void OnDisconnected(SocketIOEvent e)
-    {
-        Debug.Log("Client disconnected: " + e.data);
-
-        string data = e.data.ToString();
-        UserJSON user = UserJSON.CreateFromJSON(data);
-
-        var player = players[user.id];
-        Destroy(player);
-        players.Remove(user.id);
-    }
 
     /// <summary>
     /// 
@@ -171,7 +140,6 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         BallJSON user = BallJSON.CreateFromJSON(data);
         gameMangerOBJ.GetComponent<GameManger>().Ball.GetComponent<Ball>().Dir = new Vector3(user.Dir_X, user.Dir_Y, user.Dir_Z);
-        //gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
     }
 
     public void OnballPositionReset(SocketIOEvent e)
@@ -180,7 +148,14 @@ public class NetworkManger : MonoBehaviour
         BallJSON user = BallJSON.CreateFromJSON(data);
         gameMangerOBJ.GetComponent<GameManger>().Ball.transform.position = new Vector3(user.x, user.y, user.z);
     }
-
+    
+    public void OnUpdateSore(SocketIOEvent e)
+    {
+        string data = e.data.ToString();
+        GameSYS_JSON user = GameSYS_JSON.CreateFromJSON(data);
+        ClientStatus.score[0] = user.score[0];
+        ClientStatus.score[1] = user.score[1];
+    }
     //===========================================
     //Lobby CallBack function
     //===========================================
@@ -217,5 +192,18 @@ public class NetworkManger : MonoBehaviour
     }
     //===========================================
     //===========================================
+
+    //private string IPAdress = "localhost:3000";
+
+    //void OnGUI()
+    //{
+    //    IPAdress = GUI.TextField(new Rect(20, Screen.height / 2, 100, 30), IPAdress);
+
+    //    if (GUI.RepeatButton(new Rect(20, Screen.height / 2 + 30, 100, 30), "Connect"))
+    //    {
+    //        test = Instantiate(SocketIOPrefab);
+    //        test.GetComponent<SocketIOComponent>().url = "ws://" + IPAdress + "/socket.io/?EIO=4&transport=websocket";
+    //    }
+    //}
 }
 

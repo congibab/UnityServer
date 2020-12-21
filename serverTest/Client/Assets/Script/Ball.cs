@@ -65,32 +65,50 @@ public class Ball : MonoBehaviour
 
         if (viewPos.x >= 1 && ClientStatus.UUID == ClientStatus.currentUUID[0])
         {
-            Dir.x = -Dir.x;
+            //Dir.x = -Dir.x;
             BallJSON data = new BallJSON();
             data.RoomName = ClientStatus.currentingRoom;
+            data.x = 0;
+            data.y = 0;
+            data.z = 0;
             data.Dir_X = Dir.x;
             data.Dir_Y = Dir.y;
             data.Dir_Z = Dir.z;
 
             string user = BallJSON.CreateToJSON(data);
-            socket.Emit("BallMovementRequest", new JSONObject(user));
+            socket.Emit("BallPositionReset", new JSONObject(user));
 
-            //string user = BallJSON.CreateToJSON(data);
-            //socket.Emit("BallPositionReset", new JSONObject(user));
-            //ClientStatus.GameOver = true;
+            GameSYS_JSON data2 = new GameSYS_JSON();
+            data2.RoomName = ClientStatus.currentingRoom;
+            data2.score[0] = ClientStatus.score[0] + 1;         
+            data2.score[1] = ClientStatus.score[1];         
+            string Score = GameSYS_JSON.CreateToJSON(data2);
+            socket.Emit("UpdateSore", new JSONObject(Score));
+
         }
 
         if (viewPos.x <= 0 && ClientStatus.UUID == ClientStatus.currentUUID[0])
         {
-            Dir.x = -Dir.x;
+            //Dir.x = -Dir.x;
             BallJSON data = new BallJSON();
             data.RoomName = ClientStatus.currentingRoom;
+            data.x = 0;
+            data.y = 0;
+            data.z = 0;
             data.Dir_X = Dir.x;
             data.Dir_Y = Dir.y;
             data.Dir_Z = Dir.z;
 
             string user = BallJSON.CreateToJSON(data);
-            socket.Emit("BallMovementRequest", new JSONObject(user));
+            socket.Emit("BallPositionReset", new JSONObject(user));
+
+
+            GameSYS_JSON data2 = new GameSYS_JSON();
+            data2.RoomName = ClientStatus.currentingRoom;
+            data2.score[0] = ClientStatus.score[0];
+            data2.score[1] = ClientStatus.score[1] + 1;
+            string Score = GameSYS_JSON.CreateToJSON(data2);
+            socket.Emit("UpdateSore", new JSONObject(Score));
 
             //string user = BallJSON.CreateToJSON(data);
             //socket.Emit("BallPositionReset", new JSONObject(user));

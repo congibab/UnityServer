@@ -109,6 +109,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UUID: 
   MoveSpeed: 10
+  material:
+  - {fileID: 2100000, guid: 3767f259ef151ab4faa37661fe927912, type: 2}
+  - {fileID: 2100000, guid: eca939f6310738b43a4fb4d6561c0baa, type: 2}
 --- !u!54 &1759804804739519136
 Rigidbody:
   m_ObjectHideFlags: 0

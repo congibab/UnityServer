@@ -40,7 +40,8 @@ io.on('connection', function (socket) {
 	socket.emit("InitPlayerid", { id: thisPlayerId });
 
 	for (var i in Rooms) {
-		io.to(lobby).emit("UpdateRoomList", Rooms[i]);
+		//io.to(lobby).emit("UpdateRoomList", Rooms[i]);
+		socket.emit("UpdateRoomList", Rooms[i]);
 	}
 
 	socket.on('creatRoom', function (data) {
@@ -103,7 +104,13 @@ io.on('connection', function (socket) {
 	socket.on('BallPositionReset', function (data){
 		consola.log('BallReset');
 		console.log(data);
-		io.to(data.RoomName).emit('UpdateBallPosition', data);
+		io.to(data.RoomName).emit('ballPositionReset', data);
+	});
+
+	socket.on('UpdateSore', function (data2){
+		consola.log('UpdateSore');
+		console.log(data2);
+		io.to(data2.RoomName).emit('UpdateSore', data2);
 	});
 
 	socket.on('disconnect', () => {

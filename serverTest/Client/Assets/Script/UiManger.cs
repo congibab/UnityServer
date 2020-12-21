@@ -11,7 +11,7 @@ public class UiManger : MonoBehaviour
     List<GameObject> RoomList = new List<GameObject>();
 
     private SocketIOComponent socket;
-    private NetworkManger networkManger;
+    //private NetworkManger networkManger;
 
     [SerializeField]
     private Canvas mainCanvas;
@@ -22,17 +22,21 @@ public class UiManger : MonoBehaviour
     [SerializeField]
     private GameObject RoomOBJ;
 
+    [SerializeField]
+    private Canvas gameCanvas;
+
     private Dictionary<string, GameObject> Rooms;
 
     void Awake()
     {
         socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
-        networkManger = GameObject.Find("NetworkManger").GetComponent<NetworkManger>();
+        //networkManger = GameObject.Find("NetworkManger").GetComponent<NetworkManger>();
     }
 
     void Start()
     {
-
+        SocketIOComponent test = new SocketIOComponent();
+        test.autoConnect = true;
     }
 
     public void CreateRoom()
@@ -43,7 +47,7 @@ public class UiManger : MonoBehaviour
         ClientStatus.currentingRoom = inputField.text;
         data.name = inputField.text;
         data.UUID = ClientStatus.UUID;
-       // data.currnetUUID[0] = ClientStatus.UUID;
+        // data.currnetUUID[0] = ClientStatus.UUID;
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("creatRoom", new JSONObject(Data));
@@ -76,7 +80,7 @@ public class UiManger : MonoBehaviour
         room.UUID = roomJSON.UUID;
         //room.currnetUUID.Add(roomJSON.UUID);
 
-        Rooms[room.Name] = obj; 
+        Rooms[room.Name] = obj;
     }
 
     /// <summary>
@@ -107,8 +111,8 @@ public class UiManger : MonoBehaviour
     {
         string UUID = ClientStatus.currentUUID[0].ToString();
         GUI.Box(new Rect(20, 10, 250, 25), UUID);
-        
+
         string UUID1 = ClientStatus.currentUUID[1].ToString();
-        GUI.Box(new Rect(Screen.width - 250, 10, 250, 25), UUID1);
+        GUI.Box(new Rect(Screen.width - 270, 10, 250, 25), UUID1);
     }
 }

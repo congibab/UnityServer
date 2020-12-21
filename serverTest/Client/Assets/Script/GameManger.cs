@@ -32,10 +32,20 @@ public class GameManger : MonoBehaviour
 
     void Update()
     {
+        if (ClientStatus.score[0] >= 5)
+        {
+            ClientStatus.score[0] = 0;
+            ClientStatus.score[1] = 0;
+            ClientStatus.GameOver = true;
+        }
 
+        else if (ClientStatus.score[1] >= 5)
+        {
+            ClientStatus.score[0] = 0;
+            ClientStatus.score[1] = 0;
+            ClientStatus.GameOver = true;
+        }
     }
-
-
 #if UNITY_EDITOR
     /// <summary>
     /// 
@@ -58,6 +68,7 @@ public class GameManger : MonoBehaviour
             player.UUID = currentUUID[i];
 
             Players.Add(currentUUID[i], obj);
+
         }
     }
 #else
@@ -88,4 +99,23 @@ public class GameManger : MonoBehaviour
         Ball = Instantiate(BallPrefab, new Vector3(0,0,0), Quaternion.identity) as GameObject;
     }
 #endif
+
+    public Texture2D icon;
+
+    void OnGUI()
+    {
+        for(int i = 0; i < ClientStatus.score[0]; i++)
+        {
+            GUI.Box(new Rect(10 + (50 * i), Screen.height - 60, 50, 50), icon);
+        }
+
+        for (int i = 0; i < ClientStatus.score[1]; i++)
+        {
+            GUI.Box(new Rect((Screen.width - 60) - (50 * i), Screen.height - 60, 50, 50), icon);
+        }
+        //GUI.Box(new Rect(10, Screen.height - 60, 50, 50), icon);
+        //GUI.Box(new Rect(Screen.width - 60, Screen.height - 60, 50, 50), icon);
+        //GUI.Box(new Rect(Screen.width/2 - 50, Screen.height - 60, 100, 50), "sa");
+    }
 }
+
