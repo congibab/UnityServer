@@ -22,8 +22,6 @@ public class UiManger : MonoBehaviour
     [SerializeField]
     private GameObject RoomOBJ;
 
-    [SerializeField]
-    private Canvas gameCanvas;
 
     private Dictionary<string, GameObject> Rooms;
 
@@ -97,7 +95,7 @@ public class UiManger : MonoBehaviour
         ClientStatus.currentingRoom = target.Name;
         data.name = target.Name;
         data.UUID = ClientStatus.UUID;
-        data.index = target.index;
+        //data.index = target.index;
 
 
         string Data = RoomJSON.CreateToJSON(data);
@@ -105,6 +103,11 @@ public class UiManger : MonoBehaviour
         mainCanvas.gameObject.SetActive(false);
 
         //Destroy(Rooms[target.name]);
+    }
+
+    public void ReturnLobby()
+    {
+        mainCanvas.gameObject.SetActive(true);
     }
 
     void OnGUI()

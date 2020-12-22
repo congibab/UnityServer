@@ -5,6 +5,8 @@ using SocketIO;
 
 public class GameManger : MonoBehaviour
 {
+    private SocketIOComponent socket;
+
     [SerializeField]
     private string[] currentUUID = new string[2];
 
@@ -18,8 +20,13 @@ public class GameManger : MonoBehaviour
 
     private Vector3[] RespawnPosint = new Vector3[2];
 
+    private UiManger uimager;
+
     void Awake()
     {
+        socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
+        uimager = GameObject.Find("UiManger").GetComponent<UiManger>();
+
         ClientStatus.GameOver = false;
     }
 
@@ -44,6 +51,28 @@ public class GameManger : MonoBehaviour
             ClientStatus.score[0] = 0;
             ClientStatus.score[1] = 0;
             ClientStatus.GameOver = true;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if(ClientStatus.GameOver)
+        {
+            RoomJSON data = new RoomJSON();
+            data.name = ClientStatus.currentingRoom;
+            data.UUID = ClientStatus.UUID;
+            string Data = RoomJSON.CreateToJSON(data);
+            socket.Emit("joinlobby", new JSONObject(Data));
+
+            ClientStatus.currentingRoom = "lobby";
+            Destroy(Players[ClientStatus.currentUUID[0]]);
+            Destroy(Players[ClientStatus.currentUUID[1]]);
+            Destroy(Ball);
+            ClientStatus.currentUUID[0] = "";
+            ClientStatus.currentUUID[1] = "";
+
+            uimager.ReturnLobby();
+            Destroy(this.gameObject);
         }
     }
 #if UNITY_EDITOR

@@ -66,7 +66,7 @@ io.on('connection', function (socket) {
 			Rooms[data.name].currnetUUID[0] = data.UUID;
 		}
 
-		else if (Rooms[data.name].currnetUUID[0] != '') {
+		else {
 			Rooms[data.name].currnetUUID[1] = data.UUID;
 		}
 
@@ -74,16 +74,20 @@ io.on('connection', function (socket) {
 		socket.leave(lobby);
 		socket.join(data.name);
 		
-		//socket.emit('GameInit', Rooms[data.name]);
-		//socket.to(data.name).emit('GameInit', Rooms[data.name]);
 		io.to(data.name).emit('GameInit', Rooms[data.name]);
-
-		//delete[Rooms[data.name]];
-		//socket.emit('RemoveRoom', {});
 
 		if (Rooms[data.name].currnetUUID[0] != '' && Rooms[data.name].currnetUUID[1] != '') {
 			delete Rooms[data.name];
 		}
+	});
+
+	socket.on('joinlobby', function (data) {
+		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
+
+		socket.leave(data.name);
+		socket.join(lobby);
+		
+		//io.to(lobby).emit('GameInit', Rooms[data.name]);
 	});
 
 	//  socket.on('Movement', function (data) {
