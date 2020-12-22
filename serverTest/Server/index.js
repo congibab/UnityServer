@@ -10,8 +10,9 @@ var consola = require('consola');
 //=======================================
 //=======================================
 
-var players = [];
+var Clients =[];
 var Rooms = [];
+var Massages = [];
 
 server.listen(3000, () => {
 	console.log('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
@@ -27,8 +28,9 @@ io.on('connection', function (socket) {
 	var thisPlayerId = uuidv4();
 	var lobby = 'lobby';
 	socket.join(lobby);
-	console.log("Another user connection in lobbty :" + thisPlayerId);
 
+	Clients[thisPlayerId] = socket;
+	console.log("Another user connection in lobbty :" + thisPlayerId);
 	// var player = {
 	// 	Room: lobby,
 	// 	id: thisPlayerId,
@@ -114,8 +116,8 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('disconnect', () => {
-		// console.log('recv: player disconnected: ' + thisPlayerId);
-		// delete players[thisPlayerId];
+		console.log('recv: player disconnected: ' + thisPlayerId);
+		 delete Clients[thisPlayerId];
 		// socket.broadcast.emit('disconnected', { id: thisPlayerId });
 		console.log('some user disconnection');
 	});
