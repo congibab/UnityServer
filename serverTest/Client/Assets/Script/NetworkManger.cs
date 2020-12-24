@@ -52,7 +52,9 @@ public class NetworkManger : MonoBehaviour
         socket.On("UpdateSore", OnUpdateSore);
 
         socket.On("UpdateRoomList", UpdateRoomList);
+
         socket.On("InitPlayerid", InitPlayerid);
+        socket.On("removeRoom", removeRoom);
 
         
         socket.On("GameInit", GameInit);
@@ -171,6 +173,14 @@ public class NetworkManger : MonoBehaviour
         string data = e.data.ToString();
         UserJSON user = UserJSON.CreateFromJSON(data);
         ClientStatus.UUID = user.id;
+    }
+
+    private void removeRoom(SocketIOEvent e)
+    {
+        Debug.Log("Server => removeRoom" + e.data);
+        string data = e.data.ToString();
+        RoomJSON user = RoomJSON.CreateFromJSON(data);
+        Destroy(uiManger.Rooms[user.name]);
     }
     //===========================================
     //===========================================

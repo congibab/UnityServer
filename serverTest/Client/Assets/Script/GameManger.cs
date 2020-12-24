@@ -11,6 +11,8 @@ public class GameManger : MonoBehaviour
     private string[] currentUUID = new string[2];
 
     [SerializeField]
+    private GameObject gameManger;
+    [SerializeField]
     private GameObject PlayerPrefab;
     [SerializeField]
     private GameObject BallPrefab;
@@ -73,34 +75,36 @@ public class GameManger : MonoBehaviour
 
             uimager.ReturnLobby();
             Destroy(this.gameObject);
+            ClientStatus.GameOver = false;
         }
+
     }
-#if UNITY_EDITOR
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator GameInit()
-    {
+    //#if UNITY_EDITOR
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <returns></returns>
+    //    IEnumerator GameInit()
+    //    {
 
-        var Name = ClientStatus.UUID;
+    //        var Name = ClientStatus.UUID;
 
-        yield return null;
+    //        yield return null;
 
-        currentUUID[0] = ClientStatus.currentUUID[0];
+    //        currentUUID[0] = ClientStatus.currentUUID[0];
 
-        for (int i = 0; i < 2; i++)
-        {
-            var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
+    //        for (int i = 0; i < 2; i++)
+    //        {
+    //            var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
 
-            var player = obj.GetComponent<Player>();
-            player.UUID = currentUUID[i];
+    //            var player = obj.GetComponent<Player>();
+    //            player.UUID = currentUUID[i];
 
-            Players.Add(currentUUID[i], obj);
+    //            Players.Add(currentUUID[i], obj);
 
-        }
-    }
-#else
+    //        }
+    //    }
+    //#else
     /// <summary>
     /// 
     /// </summary>
@@ -127,7 +131,7 @@ public class GameManger : MonoBehaviour
 
         Ball = Instantiate(BallPrefab, new Vector3(0,0,0), Quaternion.identity) as GameObject;
     }
-#endif
+//#endif
 
     public Texture2D icon;
 

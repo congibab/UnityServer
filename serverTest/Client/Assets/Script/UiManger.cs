@@ -22,8 +22,7 @@ public class UiManger : MonoBehaviour
     [SerializeField]
     private GameObject RoomOBJ;
 
-
-    private Dictionary<string, GameObject> Rooms;
+    public Dictionary<string, GameObject> Rooms = new Dictionary<string, GameObject>();
 
     void Awake()
     {
@@ -78,7 +77,7 @@ public class UiManger : MonoBehaviour
         room.UUID = roomJSON.UUID;
         //room.currnetUUID.Add(roomJSON.UUID);
 
-        Rooms[room.Name] = obj;
+        Rooms.Add(room.Name ,obj);
     }
 
     /// <summary>
@@ -100,9 +99,9 @@ public class UiManger : MonoBehaviour
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("joinRoom", new JSONObject(Data));
-        mainCanvas.gameObject.SetActive(false);
+        Destroy(target.gameObject);
 
-        //Destroy(Rooms[target.name]);
+        mainCanvas.gameObject.SetActive(false);
     }
 
     public void ReturnLobby()

@@ -31,14 +31,7 @@ io.on('connection', function (socket) {
 
 	Clients[thisPlayerId] = socket;
 	console.log("Another user connection in lobbty :" + thisPlayerId);
-	// var player = {
-	// 	Room: lobby,
-	// 	id: thisPlayerId,
-	// 	x: 0,
-	// 	y: 0,
-	// 	z: 0
-	// };
-
+	
 	socket.emit("InitPlayerid", { id: thisPlayerId });
 
 	for (var i in Rooms) {
@@ -56,7 +49,8 @@ io.on('connection', function (socket) {
 		//Rooms.push(Room);
 		Rooms[data.name] = Room;
 		//socket.emit('UpdateRoomList', data);
-		io.to(lobby).emit('UpdateRoomList', Room);
+		//io.to(lobby).emit('UpdateRoomList', Room);
+		socket.to(lobby).emit('UpdateRoomList', Room);
 	});
 
 	socket.on('joinRoom', function (data) {
@@ -77,6 +71,7 @@ io.on('connection', function (socket) {
 		io.to(data.name).emit('GameInit', Rooms[data.name]);
 
 		if (Rooms[data.name].currnetUUID[0] != '' && Rooms[data.name].currnetUUID[1] != '') {
+			socket.broadcast.emit('removeRoom', { name: data.name });
 			delete Rooms[data.name];
 		}
 	});

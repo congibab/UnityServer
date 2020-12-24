@@ -48,11 +48,12 @@ MonoBehaviour:
   currentUUID:
   - 
   - 
+  gameManger: {fileID: 0}
   PlayerPrefab: {fileID: 6038647908836695625, guid: 8577c3c9d6bf1134686fef3aa49b3c0e,
     type: 3}
   BallPrefab: {fileID: 1129551299420498448, guid: 97282c248dcae5843acd1f5f886aaccf,
     type: 3}
-  Ball: {fileID: 0}
+  Ball: {fileID: 1081810764666351624}
   icon: {fileID: 2800000, guid: fceea03fd7ec5164a92481f8cf1b4617, type: 3}
 --- !u!1 &4124410800161454469
 GameObject:

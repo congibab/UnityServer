@@ -15,9 +15,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Material[] material;
 
+    Vector3 viewPos;
+    Vector3 viewPos2;
+    BoxCollider boxcollder;
+
     void Awake()
     {
         socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
+        boxcollder = GetComponent<BoxCollider>();
     }
     void Start()
     {
@@ -54,6 +59,9 @@ public class Player : MonoBehaviour
 
     void playerInput()
     {
+        viewPos = Camera.main.WorldToViewportPoint(transform.position + transform.localScale / 2);
+        viewPos2 = Camera.main.WorldToViewportPoint(transform.position - transform.localScale / 2);
+
         //if (!is_Local) return;
         if (ClientStatus.UUID != UUID) return;
 
@@ -84,7 +92,7 @@ public class Player : MonoBehaviour
         //    string user = UserJSON.CreateToJSON(data);
         //    socket.Emit("MovementRequest", new JSONObject(user));
         //}
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && viewPos.y <= 1.0f)
         {
             Dir = new Vector3(0, 1, 0);
             UserJSON data = new UserJSON();
@@ -98,7 +106,7 @@ public class Player : MonoBehaviour
             socket.Emit("MovementRequest", new JSONObject(user));
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && viewPos2.y >= 0.0f)
         {
             Dir = new Vector3(0, -1, 0);
             UserJSON data = new UserJSON();
