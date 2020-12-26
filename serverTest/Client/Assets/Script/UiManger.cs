@@ -38,13 +38,12 @@ public class UiManger : MonoBehaviour
 
     public void CreateRoom()
     {
-        if (inputField.text == "") return;
+        if (inputField.text.Equals("")) return;
 
         RoomJSON data = new RoomJSON();
         ClientStatus.currentingRoom = inputField.text;
         data.name = inputField.text;
         data.UUID = ClientStatus.UUID;
-        // data.currnetUUID[0] = ClientStatus.UUID;
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("creatRoom", new JSONObject(Data));
@@ -56,6 +55,7 @@ public class UiManger : MonoBehaviour
 
         socket.Emit("joinRoom", new JSONObject(Data));
         mainCanvas.gameObject.SetActive(false);
+        inputField.text = "";
     }
 
     public void UpdateRoom(SocketIOEvent e)

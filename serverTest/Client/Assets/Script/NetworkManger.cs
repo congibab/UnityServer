@@ -19,15 +19,18 @@ public class NetworkManger : MonoBehaviour
     private UiManger uiManger;
 
     [SerializeField]
+    private ChatManager chatManager;
+
+    [SerializeField]
     private GameObject gameMangerPrefab;
     private GameObject gameMangerOBJ;
 
-    //=================================
-    //C++ = map class
-    Dictionary<string, GameObject> players;
-    //List<string> UUID_list = new List<string>();
-    List<GameObject> RoomList = new List<GameObject>();
-    //=================================
+    ////=================================
+    ////C++ = map class
+    //Dictionary<string, GameObject> players;
+    ////List<string> UUID_list = new List<string>();
+    //List<GameObject> RoomList = new List<GameObject>();
+    ////=================================
 
     private bool is_starting;
 
@@ -39,12 +42,16 @@ public class NetworkManger : MonoBehaviour
 
     private void Start()
     {
-        socket.On("open", TestOpen);
-        socket.On("error", TestError);
-        socket.On("close", TestClose);
+        socket.On("open", (SocketIOEvent e) => { 
+            Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data); 
+        });
+        socket.On("error", (SocketIOEvent e) => { 
+            Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
+        });
+        socket.On("close", (SocketIOEvent e) => { 
+            Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data); 
+        });
 
-        //socket.On("OtherSpawn", OnOtherSpawn);
-        //socket.On("PlayableSpawn", OnplayableSpawn);
 
         socket.On("UpdatePosition", OnUpdatePosition);
         socket.On("UpdateBallPosition", OnUpdataBallPosition);
@@ -55,71 +62,20 @@ public class NetworkManger : MonoBehaviour
 
         socket.On("InitPlayerid", InitPlayerid);
         socket.On("removeRoom", removeRoom);
+        socket.On("UpdateChaingLog", (SocketIOEvent e) => {
+            chatManager.ReceiveMsg(e);
+        });
 
-        
         socket.On("GameInit", GameInit);
 
 
-        players = new Dictionary<string, GameObject>();
-        //Dictionary<string, int> test = new Dictionary<string, int>();
-        //test.Add("test1", 1);
-        //test.Add("test2", 2);
-        //test.Add("test3", 3);
-        //test.Add("test4", 4);
-        //foreach (KeyValuePair<string, int> pair in test)
-        //{
-        //    Debug.Log(pair.Key + " " + pair.Value);
-        //}
-
-        //test.Clear();
-        //test.Add("abcd", 12);
-        //foreach (KeyValuePair<string, int> pair in test)
-        //{
-        //    Debug.Log(pair.Key + " " + pair.Value);
-        //}
+        //players = new Dictionary<string, GameObject>();
     }
 
 
-    private IEnumerator NetworkConnect()
-    {
-        yield return new WaitForSeconds(0.5f);
-        socket.Emit("NetworkStart");
-        yield return new WaitForSeconds(1.0f);
-
-    }
-
-    //===========================================
-    //UI Button Function
-    //===========================================
-    public void GameStartButton()
-    {
-        is_starting = true;
-        StartCoroutine(NetworkConnect());
-    }
     //===========================================
     //CallBack Function
     //===========================================
-    public void TestOpen(SocketIOEvent e)
-    {
-        is_starting = false;
-        Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
-    }
-
-    public void TestError(SocketIOEvent e)
-    {
-        is_starting = false;
-        Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
-    }
-
-    public void TestClose(SocketIOEvent e)
-    {
-        is_starting = false;
-        Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
-    }
-
-    //====================================================
-    //====================================================
-
 
     /// <summary>
     /// 
@@ -182,6 +138,7 @@ public class NetworkManger : MonoBehaviour
         RoomJSON user = RoomJSON.CreateFromJSON(data);
         Destroy(uiManger.Rooms[user.name]);
     }
+
     //===========================================
     //===========================================
 
