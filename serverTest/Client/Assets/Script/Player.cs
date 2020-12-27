@@ -17,12 +17,12 @@ public class Player : MonoBehaviour
 
     Vector3 viewPos;
     Vector3 viewPos2;
-    BoxCollider boxcollder;
+
+    NetworkManger network;
 
     void Awake()
     {
         socket = GameObject.Find("SocketIO").GetComponent<SocketIOComponent>();
-        boxcollder = GetComponent<BoxCollider>();
     }
     void Start()
     {

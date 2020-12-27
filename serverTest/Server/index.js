@@ -30,6 +30,7 @@ io.on('connection', function (socket) {
 	socket.join(lobby);
 
 	Clients[thisPlayerId] = socket;
+	console.log(Object.keys(Clients).length);
 	console.log("Another user connection in lobbty :" + thisPlayerId);
 
 	socket.emit("InitPlayerid", { id: thisPlayerId });
