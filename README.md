@@ -62,7 +62,7 @@ localhostのみ自分が変更したいなIPを変更
 黄色box : Serverから**送信**されたMassageがあったらMassage内容を表示する。  
 
 ## Game画面(待機)
-<center><img src="./doc/game.JPG" width= 50%></center>
+<center><img src="./doc/Game.JPG" width= 50%></center>
 
 赤いbox : Player1のUUIDを表示(先にRoomに入れたClient)  
 黄色box : Player2のUUIDを表示(後にRoomに入れたClient)  **空白**ならまだPlayerは入れてない状態  
@@ -70,8 +70,8 @@ Client1は別のClient2が入るまでに待機する。
 
 ## Game画面(プレイ)
 <center>
-<img src="./doc/game2.JPG" width= 48%>
-<img src="./doc/game3.JPG" width= 48%>
+<img src="./doc/Game2.JPG" width= 48%>
+<img src="./doc/Game3.JPG" width= 48%>
 </center>
 <center>左）Client1 : 右）Client2</center>
 
