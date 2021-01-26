@@ -46,6 +46,16 @@ public class GameManger : MonoBehaviour
             ClientStatus.score[0] = 0;
             ClientStatus.score[1] = 0;
             ClientStatus.GameOver = true;
+
+            if(ClientStatus.UUID == ClientStatus.currentUUID[0])
+            {
+                ClientStatus.result = "勝ち";
+            }
+
+            else if (ClientStatus.UUID == ClientStatus.currentUUID[1])
+            {
+                ClientStatus.result = "負け";
+            }
         }
 
         else if (ClientStatus.score[1] >= 5)
@@ -53,6 +63,16 @@ public class GameManger : MonoBehaviour
             ClientStatus.score[0] = 0;
             ClientStatus.score[1] = 0;
             ClientStatus.GameOver = true;
+
+            if (ClientStatus.UUID == ClientStatus.currentUUID[0])
+            {
+                ClientStatus.result = "負け";
+            }
+
+            else if (ClientStatus.UUID == ClientStatus.currentUUID[1])
+            {
+                ClientStatus.result = "勝ち";
+            }
         }
     }
 
@@ -79,32 +99,7 @@ public class GameManger : MonoBehaviour
         }
 
     }
-    //#if UNITY_EDITOR
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <returns></returns>
-    //    IEnumerator GameInit()
-    //    {
-
-    //        var Name = ClientStatus.UUID;
-
-    //        yield return null;
-
-    //        currentUUID[0] = ClientStatus.currentUUID[0];
-
-    //        for (int i = 0; i < 2; i++)
-    //        {
-    //            var obj = Instantiate(PlayerPrefab, RespawnPosint[i], Quaternion.identity) as GameObject;
-
-    //            var player = obj.GetComponent<Player>();
-    //            player.UUID = currentUUID[i];
-
-    //            Players.Add(currentUUID[i], obj);
-
-    //        }
-    //    }
-    //#else
+    
     /// <summary>
     /// 
     /// </summary>
@@ -131,7 +126,6 @@ public class GameManger : MonoBehaviour
 
         Ball = Instantiate(BallPrefab, new Vector3(0,0,0), Quaternion.identity) as GameObject;
     }
-//#endif
 
     public Texture2D icon;
 
@@ -146,9 +140,6 @@ public class GameManger : MonoBehaviour
         {
             GUI.Box(new Rect((Screen.width - 60) - (50 * i), Screen.height - 60, 50, 50), icon);
         }
-        //GUI.Box(new Rect(10, Screen.height - 60, 50, 50), icon);
-        //GUI.Box(new Rect(Screen.width - 60, Screen.height - 60, 50, 50), icon);
-        //GUI.Box(new Rect(Screen.width/2 - 50, Screen.height - 60, 100, 50), "sa");
     }
 }
 

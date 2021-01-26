@@ -21,6 +21,8 @@ public class UiManger : MonoBehaviour
     private Transform Scroll_View_Content;
     [SerializeField]
     private GameObject RoomOBJ;
+    [SerializeField]
+    private Text result;
 
     public Dictionary<string, GameObject> Rooms = new Dictionary<string, GameObject>();
 
@@ -47,11 +49,6 @@ public class UiManger : MonoBehaviour
 
         string Data = RoomJSON.CreateToJSON(data);
         socket.Emit("creatRoom", new JSONObject(Data));
-
-        //SceneManager.LoadScene("Game");
-        //DontDestroyOnLoad(socket.gameObject);
-        //DontDestroyOnLoad(networkManger.gameObject);
-        //DontDestroyOnLoad(this.gameObject);
 
         socket.Emit("joinRoom", new JSONObject(Data));
         mainCanvas.gameObject.SetActive(false);
@@ -85,10 +82,6 @@ public class UiManger : MonoBehaviour
     /// </summary>
     public void join_Room(Room target)
     {
-        //SceneManager.LoadScene("Game");
-        //DontDestroyOnLoad(socket.gameObject);
-        //DontDestroyOnLoad(networkManger.gameObject);
-        //DontDestroyOnLoad(this.gameObject);
 
         RoomJSON data = new RoomJSON();
         ClientStatus.currentingRoom = target.Name;
@@ -107,6 +100,7 @@ public class UiManger : MonoBehaviour
     public void ReturnLobby()
     {
         mainCanvas.gameObject.SetActive(true);
+        result.text = ClientStatus.result;
     }
 
     void OnGUI()

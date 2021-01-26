@@ -50,7 +50,7 @@ URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket
 localhostのみ自分が変更したいなIPを変更
 
 ## Title画面(Client1)
-<center><img src="./doc/Title.JPG" width= 50%></center>
+<center><img src="./doc/Title1.JPG" width= 50%></center>
 
 赤いbox : Roomの名前入力してRoom Create **Button**を押すとゲームに入る。  
 黄色box : Messageを入力してSend **Button**を押すとMassageをServerに**送信**する。  
@@ -60,6 +60,7 @@ localhostのみ自分が変更したいなIPを変更
 
 赤いbox : 生成されたRoom Listが表示してその**Button**を押すとゲームに入る。  
 黄色box : Serverから**送信**されたMassageがあったらMassage内容を表示する。  
+青い色box : ゲームの勝利を判定
 
 ## Game画面(待機)
 <center><img src="./doc/Game.JPG" width= 50%></center>
@@ -86,3 +87,7 @@ Client1は別のClient2が入るまでに待機する。
 
 ### 操作系（キーボード）
 Wキーで上に移動、Sキーで下に移動 **(画面内だけ移動可能)**
+
+#  改善点
+今回のProjectにはSocket.IOを使ったんですがUnity側のSocket.IO関連ライブラリは支援が終わりましたので  
+次のserver関連Projectをやる時には外部ライブラリを使わずにSystem.Net.Socketsを使ってネットワークゲームを作るつもりです。
