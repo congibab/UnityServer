@@ -16,6 +16,8 @@ SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io)(**サポー
 ## 開発人数
 個人
 
+<div style="page-break-before:always"></div>
+
 # directory Path
 ```
 UnityServer
@@ -45,6 +47,8 @@ node index.js
 URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket
 ```
 
+<div style="page-break-before:always"></div>
+
 # Client実行
 ## 接続したいIPを変更したい場合は
 <center><img src="./doc/ipConnect.JPG" width= 50%></center>
@@ -57,6 +61,8 @@ localhostのみ自分が変更したいなIPを変更
 
 赤いbox : Roomの名前入力してRoom Create **Button**を押すとゲームに入る。  
 黄色box : Messageを入力してSend **Button**を押すとMassageをServerに**送信**する。  
+
+<div style="page-break-before:always"></div>
 
 ## Title画面(Client2)
 <center><img src="./doc/Title2.JPG" width= 50%></center>
@@ -71,6 +77,8 @@ localhostのみ自分が変更したいなIPを変更
 赤いbox : Player1のUUIDを表示(先にRoomに入れたClient)  
 黄色box : Player2のUUIDを表示(後にRoomに入れたClient)  **空白**ならまだPlayerは入れてない状態  
 Client1は別のClient2が入るまでに待機する。  
+
+<div style="page-break-before:always"></div>
 
 ## Game画面(プレイ)
 <center>
@@ -90,6 +98,8 @@ Client1は別のClient2が入るまでに待機する。
 
 ### 操作系（キーボード）
 Wキーで上に移動、Sキーで下に移動 **(画面内だけ移動可能)**
+
+<div style="page-break-before:always"></div>
 
 # ServerSide source code(簡略)
 ```javascript
@@ -141,6 +151,9 @@ io.on('connection', function (socket) {
 		socket.to(lobby).emit('UpdateRoomList', Room);
     });
 ```
+
+<div style="page-break-before:always"></div>
+
 # Client source code(簡略)
 ``` C#
 //NetworkManager.cs
