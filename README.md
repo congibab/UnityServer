@@ -16,7 +16,6 @@ SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io)(**サポー
 ## 開発人数
 個人
 
-
 # directory Path
 ```
 UnityServer
@@ -183,7 +182,12 @@ using System;
 ```
 
 # Jenkinsで自動配信
+<center>
+<img src="./doc/jenkins.JPG" width= 48%>
+</center>
 
+Githubでdata push -> Jenkins foreverでサーバ更新して再起動 -> Slackに通常  
+流れに自動化を構築しました。
 
 #  改善点
 今回のProjectにはSocket.IOを使ったんですがUnity側のSocket.IO関連ライブラリは支援が終わりましたので  
