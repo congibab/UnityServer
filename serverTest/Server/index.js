@@ -6,17 +6,14 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-//var consola = require('consola');
 //=======================================a
 //=======================================
 
 var Clients = [];
 var Rooms = [];
-var Massages = [];
 
 server.listen(3000, () => {
 	console.log('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
-	//consola.success('URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket');
 });
 
 app.get('/', function (req, res) {
@@ -30,13 +27,11 @@ io.on('connection', function (socket) {
 	socket.join(lobby);
 
 	Clients[thisPlayerId] = socket;
-	console.log(Object.keys(Clients).length);
 	console.log("Another user connection in lobbty :" + thisPlayerId);
 
 	socket.emit("InitPlayerid", { id: thisPlayerId });
 
 	for (var i in Rooms) {
-		//io.to(lobby).emit("UpdateRoomList", Rooms[i]);
 		socket.emit("UpdateRoomList", Rooms[i]);
 	}
 
@@ -44,13 +39,9 @@ io.on('connection', function (socket) {
 		console.log('create room' + data);
 		var Room = {
 			name: data.name,
-			//currnetUUID: [data.UUID, ''],
 			currnetUUID: ['', ''],
 		};
-		//Rooms.push(Room);
 		Rooms[data.name] = Room;
-		//socket.emit('UpdateRoomList', data);
-		//io.to(lobby).emit('UpdateRoomList', Room);
 		socket.to(lobby).emit('UpdateRoomList', Room);
 	});
 
@@ -82,15 +73,7 @@ io.on('connection', function (socket) {
 
 		socket.leave(data.name);
 		socket.join(lobby);
-
-		//io.to(lobby).emit('GameInit', Rooms[data.name]);
 	});
-
-	//  socket.on('Movement', function (data) {
-	// 	console.log(data);
-	// 	socket.emit('UpdatePosition', data);
-	// 	socket.broadcast.emit('UpdatePosition', data);
-	// });
 
 	socket.on('MovementRequest', function (data) {
 		console.log(data);
@@ -117,16 +100,12 @@ io.on('connection', function (socket) {
 
 	socket.on('UpdateChaingLog', function (data) {
 		console.log(data);
-		//socket.emit("UpdateChaingLog", data);
 		io.to(lobby).emit('UpdateChaingLog', data);
 	});
 
 	socket.on('disconnect', () => {
 		console.log('recv: player disconnected: ' + thisPlayerId);
 		delete Clients[thisPlayerId];
-		// socket.broadcast.emit('disconnected', { id: thisPlayerId });
 		console.log('some user disconnection');
 	});
 });
-
-//172.19.78.102

@@ -11,9 +11,6 @@ public class NetworkManger : MonoBehaviour
 
     [SerializeField]
     private SocketIOComponent socket;
-    //[SerializeField]
-    //private GameObject SocketIOPrefab;
-    //GameObject test;
 
     [SerializeField]
     private UiManger uiManger;
@@ -24,13 +21,6 @@ public class NetworkManger : MonoBehaviour
     [SerializeField]
     private GameObject gameMangerPrefab;
     private GameObject gameMangerOBJ;
-
-    ////=================================
-    ////C++ = map class
-    //Dictionary<string, GameObject> players;
-    ////List<string> UUID_list = new List<string>();
-    //List<GameObject> RoomList = new List<GameObject>();
-    ////=================================
 
     private bool is_starting;
 
@@ -68,8 +58,6 @@ public class NetworkManger : MonoBehaviour
 
         socket.On("GameInit", GameInit);
 
-
-        //players = new Dictionary<string, GameObject>();
     }
 
 
@@ -157,20 +145,5 @@ public class NetworkManger : MonoBehaviour
             gameMangerOBJ = Instantiate(gameMangerPrefab);
         }
     }
-    //===========================================
-    //===========================================
-
-    //private string IPAdress = "localhost:3000";
-
-    //void OnGUI()
-    //{
-    //    IPAdress = GUI.TextField(new Rect(20, Screen.height / 2, 100, 30), IPAdress);
-
-    //    if (GUI.RepeatButton(new Rect(20, Screen.height / 2 + 30, 100, 30), "Connect"))
-    //    {
-    //        test = Instantiate(SocketIOPrefab);
-    //        test.GetComponent<SocketIOComponent>().url = "ws://" + IPAdress + "/socket.io/?EIO=4&transport=websocket";
-    //    }
-    //}
 }
 
