@@ -49,7 +49,7 @@ URL = ws://localhost:3000/socket.io/?EIO=4&transport=websocket
 
 <div style="page-break-before:always"></div>
 
-# Client実行
+# Client実行(defaultは個人のレンタルサーバー)
 ## 接続したいIPを変更したい場合は
 <center><img src="./doc/ipConnect.JPG" width= 50%></center>
 
