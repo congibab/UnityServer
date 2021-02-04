@@ -10,7 +10,7 @@ uuid 8.3.2
 express 4.17.1  
 http 0.0.1-security  
 ## 使用ライブラリ(Client)
-SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io)(**サポート終了**)
+SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io) (**サポート終了**)
 ## 制作期間
 2か月
 ## 開発人数
