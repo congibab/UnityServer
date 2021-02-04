@@ -10,11 +10,17 @@ uuid 8.3.2
 express 4.17.1  
 http 0.0.1-security  
 ## 使用ライブラリ(Client)
-SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io)(**サポート終了)
+SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io)(**サポート終了**)
 ## 制作期間
 2か月
 ## 開発人数
 個人
+##  改善点
+今回のProjectにはSocket.IOを使ったんですがUnity側のSocket.IO関連ライブラリは支援が終わりましたので  
+次のserver関連Projectをやる時には外部ライブラリを使わずにSystem.Net.Socketsを使ってネットワークゲームを作りたいです。
+
+## guthub URL
+[https://github.com/congibab/UnityServer](https://github.com/congibab/UnityServer)
 
 <div style="page-break-before:always"></div>
 
@@ -202,7 +208,3 @@ using System;
 Githubでdata push -> Jenkins foreverでサーバ更新して再起動 -> Slackに通常  
 流れに自動化を構築しました。
 
-#  改善点
-今回のProjectにはSocket.IOを使ったんですがUnity側のSocket.IO関連ライブラリは支援が終わりましたので  
-次のserver関連Projectをやる時には外部ライブラリを使わずにSystem.Net.Socketsを使ってネットワークゲーム
-を作りたいです。
