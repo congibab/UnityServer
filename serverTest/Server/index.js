@@ -17,7 +17,7 @@ server.listen(3000, () => {
 });
 
 app.get('/', function (req, res) {
-	res.send('Hellow world test test"/"');
+	res.send('Hellow world in docker"/"');
 });
 
 io.on('connection', function (socket) {
