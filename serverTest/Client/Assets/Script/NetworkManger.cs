@@ -57,6 +57,7 @@ public class NetworkManger : MonoBehaviour
         });
 
         socket.On("GameInit", GameInit);
+        socket.On("GameCancel", GameInit);
 
     }
 
