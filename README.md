@@ -12,15 +12,23 @@ http 0.0.1-security
 ## 使用ライブラリ(Client)
 SocketIO for Unity - v1.0.0(https://github.com/vedi/unity-socket.io) (**サポート終了**)
 ## 制作期間
-2か月
+2020年10月~2020年12月
 ## 開発人数
 個人
+## 製作者
+LEE GEONHWI(イゴンヒ)
+
+## 動画(YouTube)
+[https://www.youtube.com/watch?v=Q4Arop1ba_M](https://www.youtube.com/watch?v=Q4Arop1ba_M)
+
+## guthub URL
+[https://github.com/congibab/UnityServer](https://github.com/congibab/UnityServer)
+
 ##  改善点
 今回のProjectにはSocket.IOを使ったんですがUnity側のSocket.IO関連ライブラリは支援が終わりましたので  
 次のserver関連Projectをやる時には外部ライブラリを使わずにSystem.Net.Socketsを使ってネットワークゲームを作りたいです。
 
-## guthub URL
-[https://github.com/congibab/UnityServer](https://github.com/congibab/UnityServer)
+
 
 <div style="page-break-before:always"></div>
 
