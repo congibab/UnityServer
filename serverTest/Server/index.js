@@ -1,3 +1,6 @@
+//サイト参照
+//https://socket.io/
+
 const { DH_NOT_SUITABLE_GENERATOR } = require('constants');
 const { json } = require('express');
 const { v4: uuidv4 } = require('uuid');
@@ -35,6 +38,7 @@ io.on('connection', function (socket) {
 		socket.emit("UpdateRoomList", Rooms[i]);
 	}
 
+	//ルーム生成
 	socket.on('creatRoom', function (data) {
 		console.log('create room' + data);
 		var Room = {
@@ -45,6 +49,7 @@ io.on('connection', function (socket) {
 		socket.to(lobby).emit('UpdateRoomList', Room);
 	});
 
+	//クライアントがルームに参加してゲームスタート
 	socket.on('joinRoom', function (data) {
 		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
 
@@ -68,6 +73,7 @@ io.on('connection', function (socket) {
 		}
 	});
 
+	//クライアントをロービへ戻る処理
 	socket.on('joinlobby', function (data) {
 		console.log('joinRoom : ' + data.name + ' UUID : ' + data.UUID);
 
@@ -75,11 +81,13 @@ io.on('connection', function (socket) {
 		socket.join(lobby);
 	});
 
+	//プレイヤーの位置を同期化
 	socket.on('MovementRequest', function (data) {
 		console.log(data);
 		io.to(data.RoomName).emit('UpdatePosition', data);
 	});
 
+	//ボールの位置を同期化
 	socket.on('BallMovementRequest', function (data) {
 		console.log('BallMovementRequest');
 		console.log(data);
@@ -92,6 +100,7 @@ io.on('connection', function (socket) {
 		io.to(data.RoomName).emit('ballPositionReset', data);
 	});
 
+	//スコア情報を更新
 	socket.on('UpdateSore', function (data2) {
 		console.log('UpdateSore');
 		console.log(data2);
